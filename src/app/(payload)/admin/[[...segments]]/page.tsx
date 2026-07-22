@@ -1,4 +1,6 @@
+import config from "@/payload.config";
 import { RootPage, generatePageMetadata } from "@payloadcms/next/views";
+import { importMap } from "../importMap.js";
 
 type Args = {
   params: Promise<{
@@ -12,7 +14,8 @@ type Args = {
 export const doubleEscapedRoute = true;
 
 export default async function Page({ params, searchParams }: Args) {
-  return RootPage({ params, searchParams });
+  return RootPage({ config, params, searchParams, importMap });
 }
 
-export const generateMetadata = generatePageMetadata;
+export const generateMetadata = ({ params, searchParams }: Args) =>
+  generatePageMetadata({ config, params, searchParams });
