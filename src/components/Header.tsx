@@ -81,15 +81,11 @@ export async function Header() {
         </div>
       </div>
 
-      {/* ── Row 2: Brand tabs (scrollable) ── */}
-      <div style={{
+      {/* ── Row 2: Brand tabs (scrollable, no visible scrollbar) ── */}
+      <div className="hdr-tabs-row" style={{
         background: "var(--dark-2)",
         borderBottom: "1px solid var(--border-dark)",
         width: "100%",
-        /* The row itself scrolls horizontally — content inside is wider than viewport */
-        overflowX: "auto",
-        overflowY: "visible",
-        WebkitOverflowScrolling: "touch",
       }}>
         {/* This inner div must NOT exceed 100vw — let it be flex and scroll */}
         <div style={{

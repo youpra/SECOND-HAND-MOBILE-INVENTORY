@@ -194,7 +194,7 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
   );
 
   return (
-    <div style={{ width: "100%", flexShrink: 0 }} className="fp-wrap">
+    <div className="fp-wrap">
 
       {/* ── Sort + mobile trigger row ── */}
       <div style={{ display: "flex", gap: 8, marginBottom: 14, alignItems: "center" }}>

@@ -125,7 +125,7 @@ export default async function Page({ searchParams }: PageProps) {
             </Suspense>
 
             {/* Grid column */}
-            <div style={{ flexGrow: 1, minWidth: 0, width: "100%" }}>
+            <div style={{ flexGrow: 1, minWidth: 0 }}>
               {/* Count row */}
               <div style={{
                 display: "flex", alignItems: "center", justifyContent: "space-between",
