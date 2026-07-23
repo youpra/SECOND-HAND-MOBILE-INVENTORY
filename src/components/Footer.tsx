@@ -23,7 +23,7 @@ export async function Footer() {
                   <Link href={`/?category=${cat.slug}`} className="footer-a">{cat.name}</Link>
                 </li>
               ))}
-              <li><a href="https://wa.me/c/917695892772" target="_blank" rel="noopener noreferrer" className="footer-a">WhatsApp Catalog</a></li>
+              <li><a href="https://wa.me/c/917695892772" target="_blank" rel="noopener noreferrer" className="footer-a">WhatsApp</a></li>
               <li><a href="https://www.youtube.com/@RITCHIE-STREET-CHANNEL" target="_blank" rel="noopener noreferrer" className="footer-a">YouTube</a></li>
             </ul>
           </div>
