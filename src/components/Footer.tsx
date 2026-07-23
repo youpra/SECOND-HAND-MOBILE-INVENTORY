@@ -17,7 +17,7 @@ export async function Footer() {
           <div className="space-y-4">
             <span className="text-lg font-extrabold tracking-tight text-white">
               SecondHand
-              <span className="bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
+              <span className="text-red-500">
                 {" "}
                 Mobiles
               </span>

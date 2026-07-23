@@ -18,7 +18,7 @@ export async function Header() {
           <Link href="/" className="flex items-center space-x-2">
             <span className="text-xl font-extrabold tracking-tight text-white sm:text-2xl">
               SecondHand
-              <span className="bg-gradient-to-r from-red-500 via-rose-500 to-orange-500 bg-clip-text text-transparent">
+              <span className="text-red-500">
                 {" "}
                 Mobiles
               </span>

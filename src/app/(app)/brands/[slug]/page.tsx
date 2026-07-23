@@ -87,11 +87,10 @@ export default async function Page({ params, searchParams }: BrandPageProps) {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 w-full flex-grow">
       {/* Brand Header Banner */}
-      <div className="relative mb-12 rounded-3xl overflow-hidden bg-slate-900 border border-slate-800 p-8 sm:p-12">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_60%_50%_at_50%_-10%,rgba(99,102,241,0.08),rgba(255,255,255,0))]" />
+      <div className="relative mb-12 rounded-2xl overflow-hidden bg-slate-900/40 border border-slate-800 p-8 sm:p-12">
         <div className="relative z-10 max-w-xl text-left">
           <h1 className="text-3xl font-black tracking-tight text-white sm:text-4xl mb-3">
-            {brand.name} Electronics
+            {brand.name} Mobiles
           </h1>
           {brand.description && (
             <p className="text-sm text-slate-400 leading-relaxed">{brand.description}</p>
