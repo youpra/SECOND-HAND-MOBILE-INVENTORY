@@ -80,15 +80,14 @@ export default async function Page({ searchParams }: PageProps) {
               flexShrink: 0, zIndex: 1,
               display: "flex", alignItems: "center", justifyContent: "center",
               width: "100%",
-              maxWidth: 400,
+              maxWidth: 460,
             }}>
               <img src="/media/hero-phone-gold.jpg" alt="Premium Certified Phones"
                 style={{
                   width: "100%",
                   height: "auto",
-                  borderRadius: 12,
-                  boxShadow: "0 20px 40px rgba(0,0,0,0.35)",
-                  border: "1px solid rgba(255,255,255,0.08)",
+                  borderRadius: 16,
+                  boxShadow: "0 25px 50px rgba(0,0,0,0.5)",
                 }}
               />
             </div>
