@@ -263,7 +263,7 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
 
         {/* Price Range */}
         <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Price Range ($)</label>
+          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Price Range (₹)</label>
           <div className="flex items-center gap-2">
             <input
               type="number"
@@ -437,7 +437,7 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
 
             {/* Mobile Price */}
             <div className="flex flex-col gap-2">
-              <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Price Range ($)</label>
+              <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Price Range (₹)</label>
               <div className="flex items-center gap-2">
                 <input
                   type="number"

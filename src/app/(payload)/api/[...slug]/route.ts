@@ -5,9 +5,10 @@ import {
   REST_PATCH,
   REST_POST,
 } from "@payloadcms/next/routes";
+import config from "@/payload.config";
 
-export const GET = REST_GET;
-export const POST = REST_POST;
-export const PATCH = REST_PATCH;
-export const DELETE = REST_DELETE;
-export const OPTIONS = REST_OPTIONS;
+export const GET = REST_GET(config);
+export const POST = REST_POST(config);
+export const PATCH = REST_PATCH(config);
+export const DELETE = REST_DELETE(config);
+export const OPTIONS = REST_OPTIONS(config);

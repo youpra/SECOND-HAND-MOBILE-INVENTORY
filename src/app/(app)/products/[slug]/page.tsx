@@ -30,8 +30,8 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     if (result.docs.length === 0) return {};
 
     const product = result.docs[0];
-    const title = `${product.title} - $${product.price} (Second Hand)`;
-    const description = `Buy used ${product.brand.name} ${product.model} in ${product.condition} condition. Current Selling Price: $${product.price}. Read full specifications, warranty info, and known issues.`;
+    const title = `${product.title} - ₹${product.price} (Second Hand)`;
+    const description = `Buy used ${product.brand.name} ${product.model} in ${product.condition} condition. Current Selling Price: ₹${product.price}. Read full specifications, warranty info, and known issues.`;
 
     return {
       title,
@@ -103,7 +103,7 @@ export default async function Page({ params }: ProductPageProps) {
     "offers": {
       "@type": "Offer",
       "price": product.price,
-      "priceCurrency": "USD",
+      "priceCurrency": "INR",
       "itemCondition": product.condition === "like-new" ? "https://schema.org/NewCondition" : "https://schema.org/UsedCondition",
       "availability": product.status === "available" ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
     },
@@ -161,6 +161,13 @@ export default async function Page({ params }: ProductPageProps) {
               {product.title}
             </h1>
 
+            {product.status === "sold" && (
+              <div className="flex items-start gap-2 bg-red-500/10 border border-red-500/20 text-red-400 text-xs font-bold rounded-xl p-3 mb-4 uppercase tracking-wider">
+                <AlertCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
+                <span>This item has been Sold out and is no longer available.</span>
+              </div>
+            )}
+
             {product.customerNotes && (
               <div className="flex items-start gap-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs rounded-xl p-3 mb-4">
                 <AlertCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
@@ -170,17 +177,17 @@ export default async function Page({ params }: ProductPageProps) {
 
             {/* Pricing block */}
             <div className="flex items-baseline gap-3 mb-2">
-              <span className="text-3xl font-black text-white">${product.price}</span>
+              <span className="text-3xl font-black text-white">₹{product.price}</span>
               {product.originalLaunchPrice && (
                 <span className="text-sm text-slate-500 line-through">
-                  Original: ${product.originalLaunchPrice}
+                  Original: ₹{product.originalLaunchPrice}
                 </span>
               )}
             </div>
 
             {savings > 0 && (
               <span className="inline-block rounded-lg bg-emerald-500/15 border border-emerald-500/20 px-2.5 py-1 text-xs font-bold text-emerald-400">
-                Save ${savings} ({savingsPct}% Off retail)
+                Save ₹{savings} ({savingsPct}% Off retail)
               </span>
             )}
           </div>

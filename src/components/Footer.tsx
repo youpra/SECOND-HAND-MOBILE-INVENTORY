@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { getSiteCategories, getSiteSettings } from "@/lib/payload-data";
-import { Phone, MessageSquare, Shield, Clock, MapPin } from "lucide-react";
+import { MessageSquare, Shield, Clock, MapPin } from "lucide-react";
 
 export async function Footer() {
   const categories = await getSiteCategories();
@@ -53,15 +53,6 @@ export async function Footer() {
               Contact Us
             </h3>
             <ul className="space-y-3">
-              <li className="flex items-center gap-2 text-sm text-slate-400">
-                <Phone className="h-4 w-4 text-indigo-400 flex-shrink-0" />
-                <a
-                  href={`tel:${settings.contactPhoneNumber}`}
-                  className="hover:text-white transition-colors"
-                >
-                  {settings.contactPhoneNumber || "+91 98765 43210"}
-                </a>
-              </li>
               <li className="flex items-center gap-2 text-sm text-slate-400">
                 <MessageSquare className="h-4 w-4 text-emerald-400 flex-shrink-0" />
                 <a

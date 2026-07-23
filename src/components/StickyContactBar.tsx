@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { MessageSquare, Phone, Copy, Share2, Link as LinkIcon, Check } from "lucide-react";
+import { MessageSquare, Copy, Share2, Link as LinkIcon, Check } from "lucide-react";
 
 interface StickyContactBarProps {
   product: {
@@ -26,7 +26,7 @@ export function StickyContactBar({ product, settings }: StickyContactBarProps) {
   const whatsappMsg = encodeURIComponent(
     `Hi! I'm interested in buying the ${product.title} (${product.storage || ""}, ${
       product.color || ""
-    }) listed for $${product.price} on your inventory website. Is it still available?`
+    }) listed for ₹${product.price} on your inventory website. Is it still available?`
   );
   
   const whatsappUrl = `https://wa.me/${settings.whatsappNumber?.replace(/[^0-9]/g, "")}?text=${whatsappMsg}`;
@@ -57,7 +57,7 @@ export function StickyContactBar({ product, settings }: StickyContactBarProps) {
       try {
         await navigator.share({
           title: product.title,
-          text: `Check out this pre-owned ${product.title} for $${product.price}!`,
+          text: `Check out this pre-owned ${product.title} for ₹${product.price}!`,
           url: link,
         });
       } catch (err) {
@@ -87,16 +87,6 @@ export function StickyContactBar({ product, settings }: StickyContactBarProps) {
         >
           <MessageSquare className="h-4.5 w-4.5" />
           Chat on WhatsApp
-        </a>
-
-        {/* Call Button */}
-        <a
-          href={`tel:${settings.contactPhoneNumber}`}
-          onClick={() => logContactClick("call")}
-          className="flex items-center justify-center gap-2 rounded-xl border border-slate-800 bg-slate-900 py-3 text-sm font-bold text-slate-200 hover:bg-slate-800 hover:text-white transition-all active:scale-[0.99]"
-        >
-          <Phone className="h-4.5 w-4.5 text-indigo-400" />
-          Direct Voice Call
         </a>
 
         {/* Actions grid */}
@@ -156,15 +146,6 @@ export function StickyContactBar({ product, settings }: StickyContactBarProps) {
         >
           <MessageSquare className="h-4.5 w-4.5" />
           WhatsApp
-        </a>
-
-        {/* Voice Call CTA */}
-        <a
-          href={`tel:${settings.contactPhoneNumber}`}
-          onClick={() => logContactClick("call")}
-          className="rounded-xl border border-slate-800 bg-slate-900 p-3 text-slate-300 hover:text-white"
-        >
-          <Phone className="h-5 w-5 text-indigo-400" />
         </a>
 
         {/* Share CTA */}
