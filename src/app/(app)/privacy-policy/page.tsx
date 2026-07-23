@@ -132,7 +132,7 @@ export default function PrivacyPolicyPage() {
 
       {/* ── Body ── */}
       <div style={{ maxWidth: 1100, margin: "0 auto", padding: "40px 20px" }}>
-        <div style={{ display: "flex", gap: 32, alignItems: "flex-start" }}>
+        <div className="pp-layout">
 
           {/* Table of contents — desktop */}
           <aside style={{
@@ -148,14 +148,7 @@ export default function PrivacyPolicyPage() {
             <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 4 }}>
               {sections.map(s => (
                 <li key={s.id}>
-                  <a href={`#${s.id}`} style={{
-                    fontSize: 12, color: "var(--gray-2)", textDecoration: "none",
-                    display: "block", padding: "3px 0",
-                    transition: "color 0.15s",
-                  }}
-                    onMouseEnter={e => (e.currentTarget.style.color = "var(--dark)")}
-                    onMouseLeave={e => (e.currentTarget.style.color = "var(--gray-2)")}
-                  >
+                  <a href={`#${s.id}`} className="pp-toc-link">
                     {s.title}
                   </a>
                 </li>
@@ -229,10 +222,7 @@ export default function PrivacyPolicyPage() {
         </div>
       </div>
 
-      <style>{`
-        .pp-toc { display: block; }
-        @media (max-width: 768px) { .pp-toc { display: none; } }
-      `}</style>
+
     </div>
   );
 }

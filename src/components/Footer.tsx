@@ -10,11 +10,7 @@ export async function Footer() {
       <div style={{ maxWidth: 1280, margin: "0 auto", padding: "44px 20px 24px" }}>
 
         {/* ── 3-column grid ── */}
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-          gap: 36, marginBottom: 36,
-        }}>
+        <div className="footer-grid">
 
           {/* Quick Links */}
           <div>

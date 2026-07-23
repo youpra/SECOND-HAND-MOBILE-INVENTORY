@@ -435,14 +435,7 @@ export default async function Page({ params }: ProductPageProps) {
         </div>
       </div>
 
-      {/* Responsive grid styles */}
-      <style>{`
-        @media (min-width: 768px) {
-          .pd-grid   { grid-template-columns: 1fr 1fr !important; }
-          .pd-bottom { grid-template-columns: 1.2fr 1fr !important; }
-          .spec-cols { grid-template-columns: 1fr 1fr !important; column-gap: 32px; }
-        }
-      `}</style>
+
     </div>
   );
 }

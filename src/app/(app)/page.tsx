@@ -20,15 +20,14 @@ export default async function Page({ searchParams }: PageProps) {
   return (
     <div style={{ background: "var(--off-white)" }}>
 
-      {/* ════════════════════════════════════════════
-          HERO SECTION
-      ════════════════════════════════════════════ */}
+      {/* ══════════════════════════════════════
+          HERO
+      ══════════════════════════════════════ */}
       {!isFiltered && (
         <section style={{
           background: "linear-gradient(135deg, #13120f 0%, #1e1a13 60%, #252219 100%)",
           position: "relative", overflow: "hidden",
         }}>
-          {/* Decorative gold circle blur */}
           <div style={{
             position: "absolute", right: "10%", top: "50%", transform: "translateY(-50%)",
             width: 380, height: 380, borderRadius: "50%",
@@ -36,19 +35,15 @@ export default async function Page({ searchParams }: PageProps) {
             pointerEvents: "none",
           }} />
 
-          <div style={{
-            maxWidth: 1280, margin: "0 auto",
-            padding: "60px 20px",
-            display: "flex", alignItems: "center",
-            gap: 40, minHeight: 340,
-          }}>
+          {/* hero-inner stacks on mobile via CSS */}
+          <div className="hero-inner">
             {/* Left: text */}
             <div style={{ flex: "1 1 auto", maxWidth: 520, zIndex: 1 }}>
               <div style={{
                 display: "inline-flex", alignItems: "center", gap: 7,
                 padding: "4px 12px", borderRadius: 99,
                 background: "var(--gold-dim)", border: "1px solid var(--gold-border)",
-                marginBottom: 20,
+                marginBottom: 18,
               }}>
                 <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--gold)", display: "block" }} />
                 <span style={{ fontSize: 11, fontWeight: 700, color: "var(--gold)", letterSpacing: "0.07em", textTransform: "uppercase" }}>
@@ -57,19 +52,17 @@ export default async function Page({ searchParams }: PageProps) {
               </div>
 
               <h1 style={{
-                fontSize: "clamp(26px, 5vw, 44px)",
-                fontWeight: 900,
-                color: "#fff",
-                lineHeight: 1.12,
-                letterSpacing: "-0.025em",
-                marginBottom: 20,
+                fontSize: "clamp(24px, 5vw, 44px)",
+                fontWeight: 900, color: "#fff",
+                lineHeight: 1.12, letterSpacing: "-0.025em",
+                marginBottom: 16,
               }}>
                 Experience Luxury<br />
                 for Less.<br />
                 <span style={{ color: "var(--gold)" }}>Premium Certified<br />Pre-Owned Smartphones.</span>
               </h1>
 
-              <p style={{ fontSize: 14, color: "rgba(255,255,255,0.55)", marginBottom: 28, lineHeight: 1.65 }}>
+              <p style={{ fontSize: 14, color: "rgba(255,255,255,0.55)", marginBottom: 24, lineHeight: 1.65 }}>
                 Verified condition · Real battery health · Instant WhatsApp inquiry.<br />
                 Near Ritchie Street, Chennai — 600002
               </p>
@@ -81,77 +74,63 @@ export default async function Page({ searchParams }: PageProps) {
               </a>
             </div>
 
-            {/* Right: Logo / brand visual */}
+            {/* Right: Logo visual — hidden on mobile via hide-mobile */}
             <div style={{
-              flexShrink: 0,
+              flexShrink: 0, zIndex: 1,
               display: "flex", flexDirection: "column",
               alignItems: "center", justifyContent: "center",
-              zIndex: 1,
             }} className="hide-mobile">
-              {/* Marble-style pedestal effect using CSS */}
               <div style={{
-                width: 260, height: 260,
-                borderRadius: "50%",
+                width: 240, height: 240, borderRadius: "50%",
                 background: "radial-gradient(circle at 35% 35%, #e8e4dc, #c8c3b8, #a09b90)",
                 display: "flex", alignItems: "center", justifyContent: "center",
                 boxShadow: "0 20px 60px rgba(0,0,0,0.5), inset 0 -8px 20px rgba(0,0,0,0.2)",
                 border: "3px solid rgba(201,169,110,0.4)",
-                position: "relative",
               }}>
-                <img
-                  src="/media/logo.png"
-                  alt="RITCHIE STREET"
-                  style={{ width: 180, height: 180, objectFit: "contain", borderRadius: "50%" }}
-                />
+                <img src="/media/logo.png" alt="RITCHIE STREET"
+                  style={{ width: 170, height: 170, objectFit: "contain", borderRadius: "50%" }} />
               </div>
-              {/* Pedestal base */}
-              <div style={{
-                width: 200, height: 16, borderRadius: "50%",
-                background: "radial-gradient(ellipse, rgba(201,169,110,0.3) 0%, transparent 70%)",
-                marginTop: -8,
-              }} />
-              <div style={{
-                marginTop: 16,
-                display: "flex", flexDirection: "column", alignItems: "center", gap: 2,
-              }}>
-                <span style={{ fontSize: 18, fontWeight: 900, color: "#fff", letterSpacing: "-0.02em" }}>
+              <div style={{ width: 180, height: 14, borderRadius: "50%", background: "radial-gradient(ellipse, rgba(201,169,110,0.3) 0%, transparent 70%)", marginTop: -6 }} />
+              <div style={{ marginTop: 14, textAlign: "center" }}>
+                <span style={{ fontSize: 17, fontWeight: 900, color: "#fff", letterSpacing: "-0.02em" }}>
                   RITCHIE <span style={{ color: "var(--gold)" }}>STREET</span>
                 </span>
-                <span style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", letterSpacing: "0.1em", textTransform: "uppercase" }}>
+                <div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", letterSpacing: "0.1em", textTransform: "uppercase", marginTop: 4 }}>
                   Second Hand Mobiles · Chennai
-                </span>
+                </div>
               </div>
             </div>
           </div>
         </section>
       )}
 
-      {/* ════════════════════════════════════════════
+      {/* ══════════════════════════════════════
           FEATURED PRODUCTS
-      ════════════════════════════════════════════ */}
-      <section style={{ background: "#fff", padding: "48px 0 52px" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 20px" }}>
+      ══════════════════════════════════════ */}
+      <section style={{ background: "#fff", padding: "36px 0 48px" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 16px" }}>
           <div className="section-title" style={{ color: "var(--dark)" }}>
             Featured Premium Devices
           </div>
           <div className="section-sub">
-            Verified second-hand smartphones with real battery health & condition ratings
+            Verified second-hand smartphones with real battery health &amp; condition ratings
           </div>
 
-          {/* Filter + Grid row */}
-          <div style={{ display: "flex", gap: 20, alignItems: "flex-start" }}>
-            {/* Sidebar */}
-            <Suspense fallback={
-              <div style={{ width: 220, flexShrink: 0, borderRadius: 10, height: 400,
-                background: "var(--off-white)", border: "1px solid var(--border-light)" }} />
-            }>
+          {/* products-layout: row on desktop, column on mobile */}
+          <div className="products-layout">
+
+            {/* Filter sidebar */}
+            <Suspense fallback={<div style={{ width: 220, flexShrink: 0 }} />}>
               <FilterPanel categories={categories} brands={brands} />
             </Suspense>
 
-            {/* Grid */}
-            <div style={{ flexGrow: 1, minWidth: 0 }}>
+            {/* Grid column */}
+            <div style={{ flexGrow: 1, minWidth: 0, width: "100%" }}>
               {/* Count row */}
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+              <div style={{
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                marginBottom: 14, flexWrap: "wrap", gap: 8,
+              }}>
                 <span style={{ fontSize: 13, color: "var(--gray-2)", fontWeight: 500 }}>
                   {products.length} {products.length === 1 ? "device" : "devices"} listed
                 </span>
@@ -165,12 +144,12 @@ export default async function Page({ searchParams }: PageProps) {
               {products.length === 0 ? (
                 <div style={{
                   display: "flex", flexDirection: "column", alignItems: "center",
-                  padding: "64px 20px", borderRadius: 12,
+                  padding: "48px 16px", borderRadius: 12,
                   background: "var(--off-white)", border: "1px solid var(--border-light)",
                   textAlign: "center",
                 }}>
-                  <Smartphone size={40} color="#c9a96e" />
-                  <div style={{ fontSize: 16, fontWeight: 700, marginTop: 14, marginBottom: 6, color: "var(--dark)" }}>
+                  <Smartphone size={36} color="#c9a96e" />
+                  <div style={{ fontSize: 16, fontWeight: 700, marginTop: 12, marginBottom: 6, color: "var(--dark)" }}>
                     No devices found
                   </div>
                   <div style={{ fontSize: 13, color: "var(--gray-2)" }}>
@@ -189,56 +168,36 @@ export default async function Page({ searchParams }: PageProps) {
         </div>
       </section>
 
-      {/* ════════════════════════════════════════════
+      {/* ══════════════════════════════════════
           WHY CHOOSE US
-      ════════════════════════════════════════════ */}
+      ══════════════════════════════════════ */}
       {!isFiltered && (
         <section style={{
           background: "var(--dark)",
-          padding: "56px 0 60px",
+          padding: "48px 16px 52px",
           borderTop: "1px solid var(--border-dark)",
         }}>
-          <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 20px" }}>
-            <div className="section-title" style={{ color: "#fff", marginBottom: 6 }}>
-              Why Choose Us
-            </div>
-            <div className="section-sub" style={{ color: "rgba(255,255,255,0.45)", marginBottom: 44 }}>
+          <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+            <div className="section-title" style={{ color: "#fff" }}>Why Choose Us</div>
+            <div className="section-sub" style={{ color: "rgba(255,255,255,0.45)" }}>
               Everything you need to buy with confidence
             </div>
-
             <div className="why-grid">
               {[
-                {
-                  Icon: ShieldCheck,
-                  title: "Verified Condition",
-                  desc: "We stand quality assessments and test every mobile device before listing.",
-                },
-                {
-                  Icon: Zap,
-                  title: "Battery Health Guarantee",
-                  desc: "We report real battery health on all pre-owned smartphones honestly.",
-                },
-                {
-                  Icon: Headphones,
-                  title: "Direct Support",
-                  desc: "We help you seamlessly via WhatsApp with immediate customer support.",
-                },
+                { Icon: ShieldCheck, title: "Verified Condition",       desc: "We stand quality assessments and test every mobile device before listing." },
+                { Icon: Zap,         title: "Battery Health Guarantee", desc: "We report real battery health on all pre-owned smartphones honestly." },
+                { Icon: Headphones,  title: "Direct Support",           desc: "We help you seamlessly via WhatsApp with immediate customer support." },
               ].map(({ Icon, title, desc }) => (
-                <div key={title} style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", padding: "0 16px" }}>
+                <div key={title} style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", padding: "0 8px" }}>
                   <div style={{
-                    width: 64, height: 64, borderRadius: "50%",
+                    width: 60, height: 60, borderRadius: "50%",
                     background: "var(--gold-dim)", border: "1px solid var(--gold-border)",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    marginBottom: 18,
+                    display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 16,
                   }}>
-                    <Icon size={28} color="var(--gold)" />
+                    <Icon size={26} color="var(--gold)" />
                   </div>
-                  <div style={{ fontSize: 15, fontWeight: 800, color: "#fff", marginBottom: 8, letterSpacing: "-0.01em" }}>
-                    {title}
-                  </div>
-                  <div style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", lineHeight: 1.65, maxWidth: 240 }}>
-                    {desc}
-                  </div>
+                  <div style={{ fontSize: 14, fontWeight: 800, color: "#fff", marginBottom: 8 }}>{title}</div>
+                  <div style={{ fontSize: 13, color: "rgba(255,255,255,0.45)", lineHeight: 1.65, maxWidth: 220 }}>{desc}</div>
                 </div>
               ))}
             </div>

@@ -277,11 +277,11 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
       )}
 
       <style>{`
-        .fp-wrap    { max-width: 220px; }
-        .fp-sidebar { display: block; }
+        .fp-wrap       { width: 220px; flex-shrink: 0; }
+        .fp-sidebar    { display: block; }
         .fp-mobile-btn { display: none !important; }
         @media (max-width: 1023px) {
-          .fp-wrap        { max-width: 100%; }
+          .fp-wrap        { width: 100%; }
           .fp-sidebar     { display: none !important; }
           .fp-mobile-btn  { display: flex !important; }
         }

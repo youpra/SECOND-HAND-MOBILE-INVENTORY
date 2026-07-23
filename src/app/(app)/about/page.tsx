@@ -122,7 +122,7 @@ export default function AboutPage() {
           <h2 style={{ fontSize: 22, fontWeight: 900, color: "var(--dark)", letterSpacing: "-0.02em", marginBottom: 32, textAlign: "center" }}>
             Get in Touch
           </h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
+          <div className="about-contact-grid">
             {[
               {
                 Icon: MapPin, color: "var(--gold)",
