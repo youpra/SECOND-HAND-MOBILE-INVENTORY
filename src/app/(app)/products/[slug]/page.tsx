@@ -144,14 +144,23 @@ export default async function Page({ params }: ProductPageProps) {
         {/* Left Column: Swipe Gallery */}
         <div className="lg:col-span-7 w-full">
           {(() => {
-            const galleryImages = [];
+            const galleryImages: any[] = [];
             if (product.mainImage) {
-              galleryImages.push({
-                image: product.mainImage,
-              });
+              galleryImages.push({ image: product.mainImage });
+            } else if (product.youtubeShortsUrl) {
+              // Derive YouTube thumbnail URL directly from the stored URL
+              const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|shorts\/|watch\?v=|&v=)([^#&?]*).*/;
+              const match = String(product.youtubeShortsUrl).match(regExp);
+              const videoId = match && match[2]?.length === 11 ? match[2] : null;
+              if (videoId) {
+                galleryImages.push({ image: { url: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`, alt: product.title } });
+              }
             }
             if (product.gallery && product.gallery.length > 0) {
               galleryImages.push(...product.gallery);
+            }
+            if (galleryImages.length === 0) {
+              galleryImages.push({ image: { url: "/media/logo.png", alt: "RITCHIE STREET" } });
             }
             return <ProductGallery images={galleryImages} />;
           })()}

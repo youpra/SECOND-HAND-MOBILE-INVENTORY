@@ -69,24 +69,33 @@ export function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
 
-        {/* Main Image */}
+        {/* Main Image — prefer uploaded mainImage, fall back to YouTube CDN, then logo */}
         <img
           src={(() => {
+            // 1. Try the uploaded mainImage
             const img = product.mainImage;
-            if (!img) return "/media/logo.png";
-            const filename = typeof img === "object" ? img.filename : null;
-            if (filename) return `/media/${filename}`;
-            const url = typeof img === "object" ? img.url : img;
-            if (url && typeof url === "string") {
-              if (url.startsWith("/api/media/file/")) {
-                return url.replace("/api/media/file/", "/media/");
+            if (img) {
+              const filename = typeof img === "object" ? img.filename : null;
+              if (filename) return `/media/${filename}`;
+              const url = typeof img === "object" ? img.url : img;
+              if (url && typeof url === "string") {
+                if (url.startsWith("/api/media/file/")) return url.replace("/api/media/file/", "/media/");
+                return url;
               }
-              return url;
             }
+            // 2. Try YouTube Shorts thumbnail directly from CDN
+            const ytUrl = product.youtubeShortsUrl;
+            if (ytUrl) {
+              const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|shorts\/|watch\?v=|&v=)([^#&?]*).*/;
+              const match = String(ytUrl).match(regExp);
+              const videoId = match && match[2]?.length === 11 ? match[2] : null;
+              if (videoId) return `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+            }
+            // 3. Fallback to site logo
             return "/media/logo.png";
           })()}
           alt={product.title}
-          className={`h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 ${
+          className={`h-full w-full object-contain transition-transform duration-500 group-hover:scale-105 ${
             isSold || isOutOfStock ? "filter grayscale opacity-45 blur-[2px]" : ""
           }`}
           loading="lazy"

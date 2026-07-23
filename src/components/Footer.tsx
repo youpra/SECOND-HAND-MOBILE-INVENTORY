@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { getSiteCategories, getSiteSettings } from "@/lib/payload-data";
-import { MessageSquare, Shield, Clock, MapPin } from "lucide-react";
+import { MessageSquare, Shield, MapPin, Youtube, Send } from "lucide-react";
 
 export async function Footer() {
   const categories = await getSiteCategories();
@@ -45,26 +45,48 @@ export async function Footer() {
             </ul>
           </div>
 
-          {/* Support and Info */}
+          {/* Contact Links */}
           <div>
             <h3 className="text-sm font-semibold text-slate-200 uppercase tracking-wider mb-4">
               Contact Us
             </h3>
             <ul className="space-y-3">
-              <li className="flex items-center gap-2 text-sm text-slate-400">
+              <li className="flex items-center gap-2 text-sm">
                 <MessageSquare className="h-4 w-4 text-emerald-400 flex-shrink-0" />
                 <a
-                  href={whatsappLink}
+                  href="https://wa.me/c/917695892772"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-white transition-colors text-emerald-400 font-medium"
                 >
-                  WhatsApp Inquiry
+                  WhatsApp: 7695892772
                 </a>
               </li>
-              <li className="flex items-center gap-2 text-sm text-slate-500">
-                <Clock className="h-4 w-4 text-slate-500 flex-shrink-0" />
-                <span>Open: 10 AM - 9 PM Daily</span>
+              <li className="flex items-center gap-2 text-sm">
+                <Send className="h-4 w-4 text-sky-400 flex-shrink-0" />
+                <a
+                  href="https://t.me/VJt6D3tw_K9jYjQ9"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors text-sky-400 font-medium"
+                >
+                  Telegram Channel
+                </a>
+              </li>
+              <li className="flex items-center gap-2 text-sm">
+                <Youtube className="h-4 w-4 text-red-400 flex-shrink-0" />
+                <a
+                  href="https://www.youtube.com/@RITCHIE-STREET-CHANNEL"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors text-red-400 font-medium"
+                >
+                  YouTube Channel
+                </a>
+              </li>
+              <li className="flex items-start gap-2 text-sm text-slate-500">
+                <MapPin className="h-4 w-4 text-slate-500 flex-shrink-0 mt-0.5" />
+                <span>Near Ritchie Street, Chennai - 600002</span>
               </li>
             </ul>
           </div>
@@ -86,14 +108,14 @@ export async function Footer() {
 
         <div className="border-t border-slate-900 mt-8 pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
           <p>
-            &copy; {new Date().getFullYear()} SecondHand Mobiles & Repairing. All rights reserved.
+            &copy; {new Date().getFullYear()} RITCHIE STREET — Second Hand Mobiles &amp; Repairs. All rights reserved.
           </p>
           <div className="flex gap-4">
             <Link href="/admin" className="hover:text-slate-300">
               Admin Login
             </Link>
             <span className="text-slate-800">|</span>
-            <span className="text-slate-600">Production Inventory System</span>
+            <span className="text-slate-600">Near Ritchie Street, Chennai - 600002</span>
           </div>
         </div>
       </div>
