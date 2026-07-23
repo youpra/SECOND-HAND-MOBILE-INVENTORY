@@ -113,7 +113,7 @@ export async function Header() {
             <a href="https://www.youtube.com/@RITCHIE-STREET-CHANNEL" target="_blank" rel="noopener noreferrer" className="social-nav">
               <Youtube size={12} color="#dc2626" />YouTube
             </a>
-            <a href="https://t.me/VJt6D3tw_K9jYjQ9" target="_blank" rel="noopener noreferrer" className="social-nav">
+            <a href="https://t.me/+VJt6D3tw_K9jYjQ9" target="_blank" rel="noopener noreferrer" className="social-nav">
               <Send size={12} color="#38bdf8" />Telegram
             </a>
           </div>

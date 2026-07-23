@@ -35,7 +35,7 @@ export async function Footer() {
             </div>
             <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 2 }}>
               <li><a href="https://wa.me/c/917695892772" target="_blank" rel="noopener noreferrer" className="footer-a">Contact Us</a></li>
-              <li><a href="https://t.me/VJt6D3tw_K9jYjQ9" target="_blank" rel="noopener noreferrer" className="footer-a">Telegram</a></li>
+              <li><a href="https://t.me/+VJt6D3tw_K9jYjQ9" target="_blank" rel="noopener noreferrer" className="footer-a">Telegram</a></li>
               <li><Link href="/privacy-policy" className="footer-a">Privacy Policy</Link></li>
               <li><Link href="/about" className="footer-a">About Us</Link></li>
             </ul>
@@ -77,7 +77,7 @@ export async function Footer() {
                   <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/>
                 </svg>
               </a>
-              <a href="https://t.me/VJt6D3tw_K9jYjQ9"
+              <a href="https://t.me/+VJt6D3tw_K9jYjQ9"
                 target="_blank" rel="noopener noreferrer" aria-label="Telegram"
                 style={{
                   width: 34, height: 34, borderRadius: "50%",

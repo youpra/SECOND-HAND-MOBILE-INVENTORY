@@ -145,8 +145,8 @@ export default function AboutPage() {
               {
                 Icon: Send, color: "#38bdf8",
                 label: "Telegram",
-                value: "t.me/VJt6D3tw_K9jYjQ9",
-                href: "https://t.me/VJt6D3tw_K9jYjQ9",
+                value: "t.me/+VJt6D3tw_K9jYjQ9",
+                href: "https://t.me/+VJt6D3tw_K9jYjQ9",
               },
             ].map(({ Icon, color, label, value, href }) => (
               <a key={label} href={href} target="_blank" rel="noopener noreferrer" style={{
