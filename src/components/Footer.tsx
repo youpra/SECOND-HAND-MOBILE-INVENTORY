@@ -66,27 +66,48 @@ export async function Footer() {
               Call today: +917695892772
             </div>
 
-            {/* Social icons */}
+            {/* Social icons — only real links */}
             <div style={{ display: "flex", gap: 10 }}>
-              {[
-                { href: "https://www.facebook.com", icon: "f", label: "Facebook" },
-                { href: "https://www.instagram.com", icon: "ig", label: "Instagram" },
-                { href: "https://www.youtube.com/@RITCHIE-STREET-CHANNEL", icon: "▶", label: "YouTube" },
-                { href: "https://t.me/VJt6D3tw_K9jYjQ9", icon: "✈", label: "Telegram" },
-              ].map(({ href, icon, label }) => (
-                <a key={label} href={href} target="_blank" rel="noopener noreferrer"
-                  aria-label={label}
-                  style={{
-                    width: 32, height: 32, borderRadius: "50%",
-                    background: "rgba(255,255,255,0.08)",
-                    border: "1px solid rgba(255,255,255,0.12)",
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    fontSize: 11, color: "rgba(255,255,255,0.6)",
-                    textDecoration: "none",
-                    transition: "background 0.15s, color 0.15s",
-                  }}
-                >{icon}</a>
-              ))}
+              <a href="https://www.youtube.com/@RITCHIE-STREET-CHANNEL"
+                target="_blank" rel="noopener noreferrer" aria-label="YouTube"
+                style={{
+                  width: 34, height: 34, borderRadius: "50%",
+                  background: "rgba(220,38,38,0.15)",
+                  border: "1px solid rgba(220,38,38,0.3)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  textDecoration: "none",
+                }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#dc2626">
+                  <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/>
+                </svg>
+              </a>
+              <a href="https://t.me/VJt6D3tw_K9jYjQ9"
+                target="_blank" rel="noopener noreferrer" aria-label="Telegram"
+                style={{
+                  width: 34, height: 34, borderRadius: "50%",
+                  background: "rgba(56,189,248,0.12)",
+                  border: "1px solid rgba(56,189,248,0.25)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  textDecoration: "none",
+                }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#38bdf8">
+                  <path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm5.94 8.19-2.04 9.6c-.15.67-.54.83-1.1.52l-3-2.21-1.45 1.39c-.16.16-.3.3-.61.3l.22-3.08 5.6-5.06c.24-.22-.05-.34-.38-.12L6.4 14.37l-2.96-.92c-.64-.2-.66-.64.14-.95l11.56-4.46c.53-.19 1 .13.8.95z"/>
+                </svg>
+              </a>
+              <a href="https://wa.me/c/917695892772"
+                target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"
+                style={{
+                  width: 34, height: 34, borderRadius: "50%",
+                  background: "rgba(22,163,74,0.12)",
+                  border: "1px solid rgba(22,163,74,0.25)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  textDecoration: "none",
+                }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="#22c55e">
+                  <path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.48-1.76-1.66-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51-.17-.01-.37-.01-.57-.01-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.22 3.07.15.2 2.1 3.2 5.08 4.49.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.08 1.76-.72 2.01-1.41.25-.69.25-1.28.17-1.41-.07-.12-.27-.2-.57-.34z"/>
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 2.12.55 4.1 1.52 5.83L0 24l6.35-1.49A11.94 11.94 0 0 0 12 24c6.63 0 12-5.37 12-12S18.63 0 12 0zm0 22c-1.85 0-3.58-.5-5.08-1.37l-.36-.22-3.77.88.9-3.67-.24-.38A10 10 0 0 1 2 12c0-5.52 4.48-10 10-10s10 4.48 10 10-4.48 10-10 10z"/>
+                </svg>
+              </a>
             </div>
           </div>
         </div>
