@@ -15,13 +15,10 @@ export async function Header() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Branding Logo */}
         <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center space-x-2">
-            <span className="text-xl font-extrabold tracking-tight text-white sm:text-2xl">
-              SecondHand
-              <span className="text-red-500">
-                {" "}
-                Mobiles
-              </span>
+          <Link href="/" className="flex items-center space-x-3">
+            <img src="/media/logo.png" alt="RITCHIE STREET" className="h-9 w-auto rounded-full border border-red-500/20" />
+            <span className="text-xl font-black tracking-tight text-white sm:text-2xl uppercase">
+              Ritchie <span className="text-red-500">Street</span>
             </span>
           </Link>
 

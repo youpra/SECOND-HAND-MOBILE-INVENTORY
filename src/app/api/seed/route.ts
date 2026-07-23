@@ -22,6 +22,21 @@ export async function GET(request: NextRequest) {
     console.log("Seeding database via API...");
     const payload = await getPayload({ config });
 
+    // Ensure youtube_shorts_url column exists in the database
+    try {
+      console.log("Running dynamic DB schema alignment for youtube_shorts_url...");
+      const db = payload.db as any;
+      if (db.pool) {
+        await db.pool.query('ALTER TABLE "products" add column if not exists "youtube_shorts_url" text;');
+        console.log("-> Synced schema column using Pool.");
+      } else if (db.drizzle) {
+        await db.drizzle.execute('ALTER TABLE "products" add column if not exists "youtube_shorts_url" text;');
+        console.log("-> Synced schema column using Drizzle.");
+      }
+    } catch (dbErr) {
+      console.warn("Schema alignment warning (might already exist):", dbErr);
+    }
+
     // 0. WIPE OLD DATA FOR RE-SEEDING (to enforce mobile-only constraint)
     console.log("Wiping existing products, categories, and brands...");
     await payload.delete({
@@ -117,6 +132,7 @@ export async function GET(request: NextRequest) {
     const iphone15ProId = await uploadMedia("iphone_15_pro.jpg", "iPhone 15 Pro Image");
     const samsungS24UltraId = await uploadMedia("samsung_s24_ultra.jpg", "Samsung S24 Ultra Image");
     const placeholderId = await uploadMedia("placeholder.jpg", "Placeholder Image");
+    const logoId = await uploadMedia("logo.png", "RITCHIE STREET Logo");
 
     // 3. Seed Categories
     const categoryMap: { [key: string]: string } = {};
@@ -337,12 +353,12 @@ export async function GET(request: NextRequest) {
     await payload.updateGlobal({
       slug: "settings",
       data: {
-        siteName: "Mobile Repairing & Inventory",
+        siteName: "RITCHIE STREET",
         whatsappNumber: "+919876543210",
         contactPhoneNumber: "+919876543210",
-        seoTitle: "Second-Hand Mobiles & Expert Repairing",
-        seoDescription: "Browse verified pre-owned smartphones and book high-quality repairing services online.",
-        logo: placeholderId,
+        seoTitle: "Ritchie Street - Second-Hand Mobiles & Repairs",
+        seoDescription: "Ritchie Street is your trusted destination for verified pre-owned smartphones and premium repairing services.",
+        logo: logoId,
       },
     });
     console.log("-> Updated global settings.");

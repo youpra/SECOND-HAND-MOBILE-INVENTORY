@@ -48,7 +48,7 @@ export function ProductCard({ product }: ProductCardProps) {
       )}
 
       {/* Thumbnail Image Container */}
-      <div className="relative mb-4 aspect-square overflow-hidden rounded-xl bg-slate-950 flex items-center justify-center">
+      <div className="relative mb-4 aspect-[9/16] overflow-hidden rounded-xl bg-slate-950 flex items-center justify-center">
         {/* Display Badge Overlay */}
         <span
           className={`absolute top-2 left-2 z-20 rounded-full border px-2.5 py-0.5 text-xs font-bold ${statusConfig.bg}`}
@@ -71,11 +71,20 @@ export function ProductCard({ product }: ProductCardProps) {
 
         {/* Main Image */}
         <img
-          src={
-            typeof product.mainImage === "object" && product.mainImage?.url
-              ? product.mainImage.url
-              : "/media/placeholder.jpg"
-          }
+          src={(() => {
+            const img = product.mainImage;
+            if (!img) return "/media/logo.png";
+            const filename = typeof img === "object" ? img.filename : null;
+            if (filename) return `/media/${filename}`;
+            const url = typeof img === "object" ? img.url : img;
+            if (url && typeof url === "string") {
+              if (url.startsWith("/api/media/file/")) {
+                return url.replace("/api/media/file/", "/media/");
+              }
+              return url;
+            }
+            return "/media/logo.png";
+          })()}
           alt={product.title}
           className={`h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 ${
             isSold || isOutOfStock ? "filter grayscale opacity-45 blur-[2px]" : ""

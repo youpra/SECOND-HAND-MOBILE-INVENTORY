@@ -15,16 +15,14 @@ export async function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and About */}
           <div className="space-y-4">
-            <span className="text-lg font-extrabold tracking-tight text-white">
-              SecondHand
-              <span className="text-red-500">
-                {" "}
-                Mobiles
+            <div className="flex items-center gap-2">
+              <img src="/media/logo.png" alt="RITCHIE STREET" className="h-7 w-auto rounded-full border border-red-500/20" />
+              <span className="text-lg font-extrabold tracking-tight text-white uppercase">
+                Ritchie <span className="text-red-500">Street</span>
               </span>
-            </span>
+            </div>
             <p className="text-sm text-slate-500 leading-relaxed">
-              Find verified pre-owned smartphones and premium mobile repair services. Check availability
-              instantly and contact us directly to purchase.
+              Ritchie Street is your premium marketplace for verified second-hand smartphones and certified mobile repair services. Check live availability and order or book a repair today.
             </p>
           </div>
 

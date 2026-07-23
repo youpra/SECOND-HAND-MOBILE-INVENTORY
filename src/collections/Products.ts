@@ -8,7 +8,7 @@ export const Products: CollectionConfig = {
   },
   hooks: {
     beforeChange: [
-      ({ data, originalDoc }) => {
+      async ({ data, originalDoc, req }) => {
         // Automatically manage status dates
         if (data.status === "sold" && originalDoc?.status !== "sold") {
           data.soldDate = new Date().toISOString();
@@ -16,6 +16,50 @@ export const Products: CollectionConfig = {
         if (data.status === "reserved" && originalDoc?.status !== "reserved") {
           data.reservedDate = new Date().toISOString();
         }
+
+        // Auto-fetch YouTube Shorts thumbnail if provided and changed
+        if (data.youtubeShortsUrl && data.youtubeShortsUrl !== originalDoc?.youtubeShortsUrl) {
+          try {
+            // Extract 11-character video ID from YouTube/Shorts URL
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|shorts\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = data.youtubeShortsUrl.match(regExp);
+            const videoId = (match && match[2].length === 11) ? match[2] : null;
+
+            if (videoId) {
+              console.log(`Extracting YouTube Shorts ID: ${videoId}, fetching thumbnail...`);
+              let response = await fetch(`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`);
+              let fileBuffer = Buffer.from(await response.arrayBuffer());
+              let filename = `yt_${videoId}_max.jpg`;
+
+              if (response.status !== 200) {
+                const fallbackResponse = await fetch(`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`);
+                fileBuffer = Buffer.from(await fallbackResponse.arrayBuffer());
+                filename = `yt_${videoId}_hq.jpg`;
+              }
+
+              // Create a media record in database
+              const media = await req.payload.create({
+                collection: 'media',
+                data: {
+                  alt: `YouTube Shorts Thumbnail for ${data.title || "Product"}`,
+                },
+                file: {
+                  data: fileBuffer,
+                  name: filename,
+                  mimetype: "image/jpeg",
+                  size: fileBuffer.length,
+                },
+              });
+
+              // Assign new media to mainImage
+              data.mainImage = media.id;
+              console.log(`Successfully auto-created thumbnail media record ID: ${media.id}`);
+            }
+          } catch (err) {
+            req.payload.logger.error("Failed to auto-fetch YouTube Shorts thumbnail: " + err);
+          }
+        }
+
         return data;
       },
     ],
@@ -292,7 +336,7 @@ export const Products: CollectionConfig = {
       name: "mainImage",
       type: "relationship",
       relationTo: "media",
-      required: true,
+      required: false,
     },
     {
       name: "gallery",
@@ -311,6 +355,15 @@ export const Products: CollectionConfig = {
       type: "text",
       admin: {
         placeholder: "YouTube link or direct video URL",
+      },
+    },
+    {
+      name: "youtubeShortsUrl",
+      type: "text",
+      label: "YouTube Shorts URL",
+      admin: {
+        description: "Add a YouTube Shorts link. The system will automatically fetch its thumbnail as the product's main image.",
+        placeholder: "e.g. https://www.youtube.com/shorts/VIDEO_ID",
       },
     },
     {

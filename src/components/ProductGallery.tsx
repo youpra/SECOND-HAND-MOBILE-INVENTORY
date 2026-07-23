@@ -11,9 +11,23 @@ interface ProductGalleryProps {
 
 export function ProductGallery({ images }: ProductGalleryProps) {
   // If no images, provide default placeholder
-  const list = images.length > 0 ? images : [{ image: { url: "/media/placeholder.jpg", alt: "Placeholder" } }];
+  const list = images.length > 0 ? images : [{ image: { url: "/media/logo.png", alt: "Logo Fallback" } }];
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+
+  const getImageUrl = (img: any) => {
+    if (!img) return "/media/logo.png";
+    const filename = typeof img === "object" ? img.filename : null;
+    if (filename) return `/media/${filename}`;
+    const url = typeof img === "object" ? img.url : img;
+    if (url && typeof url === "string") {
+      if (url.startsWith("/api/media/file/")) {
+        return url.replace("/api/media/file/", "/media/");
+      }
+      return url;
+    }
+    return "/media/logo.png";
+  };
 
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
 
@@ -40,14 +54,14 @@ export function ProductGallery({ images }: ProductGalleryProps) {
   return (
     <div className="flex flex-col gap-4 w-full">
       {/* Main Image Viewport */}
-      <div className="relative aspect-square w-full overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 flex items-center justify-center">
+      <div className="relative aspect-[9/16] max-h-[600px] w-full overflow-hidden rounded-2xl border border-slate-800 bg-slate-900 flex items-center justify-center">
         {/* Swipe Viewport */}
         <div className="overflow-hidden h-full w-full" ref={emblaRef}>
           <div className="flex h-full">
             {list.map((item: any, idx: number) => (
               <div key={idx} className="flex-[0_0_100%] min-w-0 h-full relative flex items-center justify-center">
                 <img
-                  src={item.image?.url || "/media/placeholder.jpg"}
+                  src={getImageUrl(item.image)}
                   alt={item.image?.alt || "Product image"}
                   className="max-h-full max-w-full object-contain"
                 />
@@ -90,12 +104,12 @@ export function ProductGallery({ images }: ProductGalleryProps) {
             <button
               key={idx}
               onClick={() => handleThumbnailClick(idx)}
-              className={`relative aspect-square w-16 sm:w-20 flex-shrink-0 overflow-hidden rounded-xl border bg-slate-900/60 p-1 transition-all ${
+              className={`relative aspect-[9/16] w-12 sm:w-16 flex-shrink-0 overflow-hidden rounded-xl border bg-slate-900/60 p-1 transition-all ${
                 selectedIndex === idx ? "border-red-500 ring-2 ring-red-500/20" : "border-slate-800 hover:border-slate-700"
               }`}
             >
               <img
-                src={item.image?.url || "/media/placeholder.jpg"}
+                src={getImageUrl(item.image)}
                 alt={`Thumbnail ${idx + 1}`}
                 className="h-full w-full object-contain rounded-lg"
               />
@@ -129,7 +143,7 @@ export function ProductGallery({ images }: ProductGalleryProps) {
               className="relative max-h-full max-w-full flex items-center justify-center"
             >
               <img
-                src={list[selectedIndex]?.image?.url || "/media/placeholder.jpg"}
+                src={getImageUrl(list[selectedIndex]?.image)}
                 alt={list[selectedIndex]?.image?.alt || "Zoom view"}
                 className="max-h-[85vh] max-w-full object-contain rounded-lg"
               />
