@@ -1,179 +1,207 @@
+"use client";
 import React from "react";
-import Link from "next/link";
-import { Eye, MessageSquare, Tag } from "lucide-react";
 
 interface ProductCardProps {
   product: any;
 }
 
+function getYtThumb(ytUrl: string): string | null {
+  const m = String(ytUrl || "").match(/^.*(youtu\.be\/|v\/|shorts\/|watch\?v=|&v=)([^#&?]{11})/);
+  return m ? `https://i.ytimg.com/vi/${m[2]}/hqdefault.jpg` : null;
+}
+
+function resolveImg(product: any): string {
+  const img = product.mainImage;
+  if (img) {
+    const fn = typeof img === "object" ? img.filename : null;
+    if (fn) return `/media/${fn}`;
+    const u = typeof img === "object" ? img.url : img;
+    if (u) return String(u).replace("/api/media/file/", "/media/");
+  }
+  return getYtThumb(product.youtubeShortsUrl) || "/media/logo.png";
+}
+
+const STATUS: Record<string, { label: string; color: string; bg: string; border: string }> = {
+  available:      { label: "Available",    color: "#15803d", bg: "#f0fdf4", border: "#bbf7d0" },
+  reserved:       { label: "Reserved",     color: "#b45309", bg: "#fffbeb", border: "#fde68a" },
+  sold:           { label: "Sold",         color: "#6b7280", bg: "#f9fafb", border: "#e5e7eb" },
+  "out-of-stock": { label: "Out of Stock", color: "#dc2626", bg: "#fef2f2", border: "#fecaca" },
+  repairing:      { label: "Repairing",    color: "#dc2626", bg: "#fef2f2", border: "#fecaca" },
+  "coming-soon":  { label: "Coming Soon",  color: "#0369a1", bg: "#f0f9ff", border: "#bae6fd" },
+};
+
+const CONDITION: Record<string, string> = {
+  "like-new": "Like New", excellent: "Excellent", good: "Good", fair: "Fair",
+};
+
 export function ProductCard({ product }: ProductCardProps) {
-  const isSold = product.status === "sold";
-  const isOutOfStock = product.status === "out-of-stock";
+  const isSold   = product.status === "sold";
+  const isGone   = isSold || product.status === "out-of-stock";
+  const s        = STATUS[product.status] ?? { label: "—", color: "#999", bg: "#f9f9f9", border: "#eee" };
+  const brand    = typeof product.brand === "object" ? product.brand?.name : "—";
+  const cond     = CONDITION[product.condition] || product.condition || "";
+  const img      = resolveImg(product);
+  const discount = product.originalLaunchPrice > product.price
+    ? Math.round(((product.originalLaunchPrice - product.price) / product.originalLaunchPrice) * 100)
+    : null;
 
-  // Calculate discount percentage
-  const discount =
-    product.originalLaunchPrice && product.originalLaunchPrice > product.price
-      ? Math.round(
-          ((product.originalLaunchPrice - product.price) / product.originalLaunchPrice) * 100
-        )
-      : null;
-
-  // Status mapping
-  const statusConfig = {
-    available: { label: "Available", bg: "bg-emerald-500/10 text-emerald-400 border-emerald-500/30" },
-    reserved: { label: "Reserved", bg: "bg-amber-500/10 text-amber-400 border-amber-500/30" },
-    sold: { label: "Sold", bg: "bg-slate-700/20 text-slate-400 border-slate-700/30" },
-    "out-of-stock": { label: "Out of Stock", bg: "bg-red-500/10 text-red-400 border-red-500/30" },
-    repairing: { label: "Repairing", bg: "bg-red-500/10 text-red-400 border-red-500/30" },
-    "coming-soon": { label: "Coming Soon", bg: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30" },
-  }[product.status as string] || { label: "Unknown", bg: "bg-slate-500/10 text-slate-400 border-slate-500/30" };
-
-  // Condition mapping labels
-  const conditionConfig = {
-    "like-new": "Like New",
-    excellent: "Excellent",
-    good: "Good",
-    fair: "Fair",
-  }[product.condition as string] || product.condition;
-
-  const cardContent = (
-    <div className={`relative flex flex-col h-full rounded-2xl border border-slate-800 bg-slate-900/40 p-4 transition-all duration-300 ${
-      isSold
-        ? ""
-        : "hover:border-slate-700 hover:bg-slate-900/60 hover:-translate-y-1 hover:shadow-2xl hover:shadow-red-950/20"
-    }`}>
-      {/* Grayscale overlay for Sold / Out of stock */}
-      {(isSold || isOutOfStock) && (
-        <div className="absolute inset-0 z-10 rounded-2xl bg-slate-950/40 backdrop-blur-[1px] pointer-events-none" />
-      )}
-
-      {/* Thumbnail Image Container */}
-      <div className="relative mb-4 aspect-[9/16] overflow-hidden rounded-xl bg-slate-950 flex items-center justify-center">
-        {/* Display Badge Overlay */}
-        <span
-          className={`absolute top-2 left-2 z-20 rounded-full border px-2.5 py-0.5 text-xs font-bold ${statusConfig.bg}`}
-        >
-          {statusConfig.label}
-        </span>
-
-        {discount && !isSold && !isOutOfStock && (
-          <span className="absolute top-2 right-2 z-20 rounded-full bg-red-600 px-2.5 py-0.5 text-xs font-bold text-white shadow-md">
-            {discount}% OFF
-          </span>
+  const card = (
+    <article
+      style={{
+        background: "#fff",
+        border: "1px solid var(--c-border)",
+        borderRadius: 10,
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+        cursor: isSold ? "not-allowed" : "pointer",
+        transition: "box-shadow 0.2s, transform 0.2s",
+        position: "relative",
+      }}
+      onMouseEnter={e => {
+        if (isGone) return;
+        const el = e.currentTarget as HTMLElement;
+        el.style.boxShadow = "0 8px 28px rgba(0,0,0,0.1)";
+        el.style.transform = "translateY(-2px)";
+      }}
+      onMouseLeave={e => {
+        const el = e.currentTarget as HTMLElement;
+        el.style.boxShadow = "none";
+        el.style.transform = "translateY(0)";
+      }}
+    >
+      {/* ── Image block ── */}
+      <div style={{ position: "relative", aspectRatio: "9/16", background: "#f8f8f8", overflow: "hidden", flexShrink: 0 }}>
+        {/* Dim overlay when unavailable */}
+        {isGone && (
+          <div style={{ position: "absolute", inset: 0, zIndex: 10, background: "rgba(255,255,255,0.65)", backdropFilter: "blur(1px)" }} />
         )}
 
-        {/* Sold / Out of Stock centered badge overlay */}
-        {(isSold || isOutOfStock) && (
-          <div className="absolute z-20 rounded-lg bg-slate-950/90 border border-slate-800 px-4 py-2 text-sm font-bold uppercase tracking-wider text-white shadow-xl shadow-slate-950/50">
-            {isSold ? "SOLD" : "OUT OF STOCK"}
-          </div>
+        {/* Status badge */}
+        <span style={{
+          position: "absolute", top: 8, left: 8, zIndex: 20,
+          fontSize: 9, fontWeight: 800, letterSpacing: "0.05em", textTransform: "uppercase",
+          padding: "2px 7px", borderRadius: 4,
+          color: s.color, background: s.bg, border: `1px solid ${s.border}`,
+        }}>{s.label}</span>
+
+        {/* Discount badge */}
+        {discount && !isGone && (
+          <span style={{
+            position: "absolute", top: 8, right: 8, zIndex: 20,
+            fontSize: 9, fontWeight: 800, letterSpacing: "0.04em",
+            padding: "2px 7px", borderRadius: 4,
+            color: "#fff", background: "var(--c-red)",
+          }}>-{discount}%</span>
         )}
 
-        {/* Main Image — prefer uploaded mainImage, fall back to YouTube CDN, then logo */}
+        {/* Sold stamp */}
+        {isGone && (
+          <div style={{
+            position: "absolute", top: "50%", left: "50%",
+            transform: "translate(-50%,-50%)", zIndex: 20,
+            padding: "5px 14px", borderRadius: 6,
+            background: "rgba(255,255,255,0.95)",
+            border: "1px solid #e5e7eb",
+            color: "#374151", fontSize: 10, fontWeight: 800,
+            letterSpacing: "0.12em", textTransform: "uppercase",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+          }}>{isSold ? "SOLD" : "UNAVAILABLE"}</div>
+        )}
+
         <img
-          src={(() => {
-            // 1. Try the uploaded mainImage
-            const img = product.mainImage;
-            if (img) {
-              const filename = typeof img === "object" ? img.filename : null;
-              if (filename) return `/media/${filename}`;
-              const url = typeof img === "object" ? img.url : img;
-              if (url && typeof url === "string") {
-                if (url.startsWith("/api/media/file/")) return url.replace("/api/media/file/", "/media/");
-                return url;
-              }
-            }
-            // 2. Try YouTube Shorts thumbnail directly from CDN
-            const ytUrl = product.youtubeShortsUrl;
-            if (ytUrl) {
-              const regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|shorts\/|watch\?v=|&v=)([^#&?]*).*/;
-              const match = String(ytUrl).match(regExp);
-              const videoId = match && match[2]?.length === 11 ? match[2] : null;
-              if (videoId) return `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
-            }
-            // 3. Fallback to site logo
-            return "/media/logo.png";
-          })()}
+          src={img}
           alt={product.title}
-          className={`h-full w-full object-contain transition-transform duration-500 group-hover:scale-105 ${
-            isSold || isOutOfStock ? "filter grayscale opacity-45 blur-[2px]" : ""
-          }`}
           loading="lazy"
+          style={{
+            width: "100%", height: "100%",
+            objectFit: "contain",
+            padding: "6px",
+            filter: isGone ? "grayscale(0.7) opacity(0.6)" : "none",
+            transition: "transform 0.35s ease",
+          }}
+          onMouseEnter={e => { if (!isGone) (e.currentTarget as HTMLImageElement).style.transform = "scale(1.04)"; }}
+          onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.transform = "scale(1)"; }}
         />
       </div>
 
-      {/* Product Details Section */}
-      <div className="flex flex-col flex-grow">
-        {/* Brand & Category row */}
-        <div className="flex items-center gap-2 mb-1.5 text-xs text-slate-500">
-          <span className="font-semibold text-slate-400 uppercase tracking-wider">
-            {typeof product.brand === "object" ? product.brand.name : "Device"}
+      {/* ── Info block ── */}
+      <div style={{ padding: "10px 12px 12px", display: "flex", flexDirection: "column", gap: 5, flexGrow: 1 }}>
+        {/* Brand + Condition */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <span style={{ fontSize: 10, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.06em", color: "var(--c-red)" }}>
+            {brand}
           </span>
-          <span>&bull;</span>
-          <span>{conditionConfig}</span>
-        </div>
-
-        {/* Product Title */}
-        <h3 className="mb-2 font-bold text-slate-100 line-clamp-1 group-hover:text-red-400 transition-colors">
-          {product.title}
-        </h3>
-
-        {/* Specs tags row */}
-        <div className="flex flex-wrap gap-1.5 mb-4">
-          {product.storage && (
-            <span className="rounded bg-slate-800 px-2 py-0.5 text-xs font-medium text-slate-300">
-              {product.storage}
-            </span>
-          )}
-          {product.ram && (
-            <span className="rounded bg-slate-800 px-2 py-0.5 text-xs font-medium text-slate-300">
-              {product.ram} RAM
-            </span>
-          )}
-          {product.batteryHealth && (
-            <span className="rounded bg-slate-800 px-2 py-0.5 text-xs font-medium text-red-400 flex items-center gap-0.5">
-              <Tag className="h-3 w-3" />
-              {product.batteryHealth}% BH
-            </span>
+          {cond && (
+            <span style={{
+              fontSize: 9, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.04em",
+              padding: "1px 6px", borderRadius: 3,
+              background: "var(--c-elevated)", border: "1px solid var(--c-border)",
+              color: "var(--c-text-2)",
+            }}>{cond}</span>
           )}
         </div>
 
-        {/* Pricing & Footer row */}
-        <div className="mt-auto pt-3 border-t border-slate-800/80 flex items-center justify-between">
-          <div className="flex flex-col">
-            {product.originalLaunchPrice && (
-              <span className="text-xs text-slate-500 line-through">
-                ₹{product.originalLaunchPrice}
-              </span>
+        {/* Title */}
+        <h3 style={{
+          fontSize: 12, fontWeight: 700, lineHeight: 1.35,
+          color: "var(--c-text-1)",
+          display: "-webkit-box",
+          WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden",
+        }}>{product.title}</h3>
+
+        {/* Specs */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 3, marginTop: 2 }}>
+          {product.storage && <SpecTag>{product.storage}</SpecTag>}
+          {product.ram && <SpecTag>{product.ram} RAM</SpecTag>}
+          {product.batteryHealth && <SpecTag green>⚡ {product.batteryHealth}% BH</SpecTag>}
+        </div>
+
+        {/* Price row */}
+        <div style={{
+          marginTop: "auto", paddingTop: 8,
+          borderTop: "1px solid var(--c-border-s)",
+          display: "flex", alignItems: "flex-end", justifyContent: "space-between",
+        }}>
+          <div>
+            {product.originalLaunchPrice > product.price && (
+              <div style={{ fontSize: 10, textDecoration: "line-through", color: "var(--c-text-3)", lineHeight: 1 }}>
+                ₹{Number(product.originalLaunchPrice).toLocaleString("en-IN")}
+              </div>
             )}
-            <span className="text-lg font-black text-white">
-              ₹{product.price}
-            </span>
+            <div style={{ fontSize: 15, fontWeight: 900, color: "var(--c-text-1)", lineHeight: 1.2 }}>
+              ₹{Number(product.price).toLocaleString("en-IN")}
+            </div>
           </div>
-
-          {/* Micro counters in footer of card */}
-          <div className="flex items-center gap-2.5 text-xs text-slate-500">
-            <span className="flex items-center gap-0.5">
-              <Eye className="h-3.5 w-3.5" />
-              {product.viewCount || 0}
-            </span>
-            <span className="flex items-center gap-0.5 text-emerald-500/80">
-              <MessageSquare className="h-3.5 w-3.5" />
-              {product.whatsappClickCount || 0}
-            </span>
-          </div>
+          {!isGone && (
+            <span style={{
+              fontSize: 10, fontWeight: 700,
+              color: "var(--c-red)", textDecoration: "none",
+              letterSpacing: "0.02em",
+            }}>View →</span>
+          )}
         </div>
       </div>
-    </div>
+    </article>
   );
 
-  if (isSold) {
-    return <div className="block h-full cursor-not-allowed">{cardContent}</div>;
-  }
-
+  if (isSold) return <div style={{ height: "100%" }}>{card}</div>;
   return (
-    <Link href={`/products/${product.slug}`} className="group block h-full">
-      {cardContent}
-    </Link>
+    <a href={`/products/${product.slug}`} style={{ display: "block", height: "100%", textDecoration: "none" }}>
+      {card}
+    </a>
+  );
+}
+
+function SpecTag({ children, green }: { children: React.ReactNode; green?: boolean }) {
+  return (
+    <span style={{
+      fontSize: 9, fontWeight: 600, letterSpacing: "0.02em",
+      padding: "2px 6px", borderRadius: 3,
+      background: green ? "#f0fdf4" : "var(--c-elevated)",
+      border: green ? "1px solid #bbf7d0" : "1px solid var(--c-border)",
+      color: green ? "#15803d" : "var(--c-text-2)",
+    }}>{children}</span>
   );
 }

@@ -1,38 +1,23 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "../globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 
 export const metadata: Metadata = {
-  title: "SecondHand Electronics Inventory",
-  description: "Browse available, reserved, and sold used mobile phones, laptops, and tablets directly.",
+  title: "RITCHIE STREET — Second Hand Mobiles Chennai",
+  description: "Buy verified second-hand smartphones or get your mobile repaired at Ritchie Street, Chennai. Live inventory with real prices and battery health.",
+  keywords: ["second hand mobile Chennai", "used phones", "mobile repair", "Ritchie Street"],
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
-      suppressHydrationWarning
-    >
-      <body className="min-h-full flex flex-col bg-slate-950 text-white selection:bg-red-600 selection:text-white">
+    <html lang="en" className={inter.variable} suppressHydrationWarning>
+      <body style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "var(--c-bg)", color: "var(--c-text-1)" }}>
         <Header />
-        <main className="flex-grow flex flex-col">{children}</main>
+        <main style={{ flexGrow: 1, display: "flex", flexDirection: "column" }}>{children}</main>
         <Footer />
       </body>
     </html>
