@@ -37,18 +37,18 @@ export async function Header() {
           </Link>
 
           {/* Search bar */}
-          <div className="search-wrap">
+          <form action="/" method="GET" className="search-wrap">
             <input
               className="search-input"
               type="text"
-              placeholder="Search..."
-              readOnly
-              onClick={() => { window.location.href = "/"; }}
+              name="search"
+              placeholder="Search phones..."
+              autoComplete="off"
             />
-            <button className="search-btn" aria-label="Search">
+            <button className="search-btn" type="submit" aria-label="Search">
               <Search size={14} color="var(--dark)" />
             </button>
-          </div>
+          </form>
 
           {/* Right actions */}
           <div style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: "auto", flexShrink: 0 }}>
