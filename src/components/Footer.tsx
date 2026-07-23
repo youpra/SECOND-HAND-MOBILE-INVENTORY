@@ -40,8 +40,8 @@ export async function Footer() {
             <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 2 }}>
               <li><a href="https://wa.me/c/917695892772" target="_blank" rel="noopener noreferrer" className="footer-a">Contact Us</a></li>
               <li><a href="https://t.me/VJt6D3tw_K9jYjQ9" target="_blank" rel="noopener noreferrer" className="footer-a">Telegram</a></li>
-              <li><Link href="/admin" className="footer-a">Privacy Policy</Link></li>
-              <li><Link href="/admin" className="footer-a">About</Link></li>
+              <li><Link href="/privacy-policy" className="footer-a">Privacy Policy</Link></li>
+              <li><Link href="/about" className="footer-a">About Us</Link></li>
             </ul>
           </div>
 
