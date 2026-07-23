@@ -31,12 +31,15 @@ export async function GET(request: NextRequest) {
     const payload = await getPayload({ config });
 
     // 1. Seed Admin User
-    const existingUsers = await payload.find({
+    const existingAdmin = await payload.find({
       collection: "users",
+      where: {
+        email: { equals: "admin@inventory.com" },
+      },
       limit: 1,
     });
 
-    if (existingUsers.docs.length === 0) {
+    if (existingAdmin.docs.length === 0) {
       await payload.create({
         collection: "users",
         data: {
@@ -45,6 +48,15 @@ export async function GET(request: NextRequest) {
         },
       });
       console.log("-> Created default admin: admin@inventory.com / password123");
+    } else {
+      await payload.update({
+        collection: "users",
+        id: existingAdmin.docs[0].id,
+        data: {
+          password: "password123",
+        },
+      });
+      console.log("-> Reset default admin password to password123");
     }
 
     // 2. Seed Media Placeholder
