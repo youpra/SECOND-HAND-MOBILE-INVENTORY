@@ -71,7 +71,11 @@ export function ProductCard({ product }: ProductCardProps) {
 
         {/* Main Image */}
         <img
-          src="/media/placeholder.jpg" // Fallback placeholder served statically
+          src={
+            typeof product.mainImage === "object" && product.mainImage?.url
+              ? product.mainImage.url
+              : "/media/placeholder.jpg"
+          }
           alt={product.title}
           className={`h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 ${
             isSold || isOutOfStock ? "filter grayscale opacity-45 blur-[2px]" : ""

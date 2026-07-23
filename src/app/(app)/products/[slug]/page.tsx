@@ -143,7 +143,18 @@ export default async function Page({ params }: ProductPageProps) {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left Column: Swipe Gallery */}
         <div className="lg:col-span-7 w-full">
-          <ProductGallery images={product.gallery || []} />
+          {(() => {
+            const galleryImages = [];
+            if (product.mainImage) {
+              galleryImages.push({
+                image: product.mainImage,
+              });
+            }
+            if (product.gallery && product.gallery.length > 0) {
+              galleryImages.push(...product.gallery);
+            }
+            return <ProductGallery images={galleryImages} />;
+          })()}
         </div>
 
         {/* Right Column: Specifications & Contact Panel */}
