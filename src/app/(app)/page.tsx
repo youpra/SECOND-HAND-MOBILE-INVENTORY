@@ -119,12 +119,6 @@ export default async function Page({ searchParams }: PageProps) {
           </div>
         </div>
       </div>
-
-      {/* Responsive grid: 2 on mobile → 3 tablet → 4 desktop */}
-      <style>{`
-        @media (min-width: 640px)  { .product-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 12px !important; } }
-        @media (min-width: 1024px) { .product-grid { grid-template-columns: repeat(4, 1fr) !important; gap: 14px !important; } }
-      `}</style>
     </div>
   );
 }
