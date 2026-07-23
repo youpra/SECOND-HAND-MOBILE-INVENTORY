@@ -3,6 +3,7 @@ import { getFilteredProducts, FilterParams } from "@/lib/products";
 import { getSiteCategories, getSiteBrands } from "@/lib/payload-data";
 import { ProductCard } from "@/components/ProductCard";
 import { FilterPanel } from "@/components/FilterPanel";
+import { BrandCategories } from "@/components/BrandCategories";
 import { MessageSquare, ShieldCheck, Zap, Headphones, Smartphone } from "lucide-react";
 
 interface PageProps {
@@ -103,6 +104,11 @@ export default async function Page({ searchParams }: PageProps) {
           </div>
         </section>
       )}
+
+      {/* ══════════════════════════════════════
+          BRAND CATEGORIES
+      ══════════════════════════════════════ */}
+      {!isFiltered && <BrandCategories />}
 
       {/* ══════════════════════════════════════
           FEATURED PRODUCTS
