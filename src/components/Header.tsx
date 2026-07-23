@@ -22,11 +22,10 @@ export async function Header() {
             display: "flex", alignItems: "center", gap: 8,
             textDecoration: "none", flexShrink: 0,
           }}>
-            <div style={{
-              width: 32, height: 32, background: "var(--gold)",
-              borderRadius: 6, display: "flex", alignItems: "center", justifyContent: "center",
-              fontWeight: 900, fontSize: 15, color: "var(--dark)", flexShrink: 0,
-            }}>R</div>
+            <img src="/media/logo.png" alt="Ritchie Street" style={{
+              width: 32, height: 32, borderRadius: "50%", objectFit: "cover",
+              border: "1.5px solid var(--gold)", flexShrink: 0,
+            }} />
             <span style={{
               fontSize: 14, fontWeight: 800, color: "var(--white)",
               letterSpacing: "-0.01em", whiteSpace: "nowrap",

@@ -75,31 +75,22 @@ export default async function Page({ searchParams }: PageProps) {
               </a>
             </div>
 
-            {/* Right: Logo visual — hidden on mobile via hide-mobile */}
+            {/* Right: Premium phone pedestal visual */}
             <div style={{
               flexShrink: 0, zIndex: 1,
-              display: "flex", flexDirection: "column",
-              alignItems: "center", justifyContent: "center",
-            }} className="hide-mobile">
-              <div style={{
-                width: 240, height: 240, borderRadius: "50%",
-                background: "radial-gradient(circle at 35% 35%, #e8e4dc, #c8c3b8, #a09b90)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                boxShadow: "0 20px 60px rgba(0,0,0,0.5), inset 0 -8px 20px rgba(0,0,0,0.2)",
-                border: "3px solid rgba(201,169,110,0.4)",
-              }}>
-                <img src="/media/logo.png" alt="RITCHIE STREET"
-                  style={{ width: 170, height: 170, objectFit: "contain", borderRadius: "50%" }} />
-              </div>
-              <div style={{ width: 180, height: 14, borderRadius: "50%", background: "radial-gradient(ellipse, rgba(201,169,110,0.3) 0%, transparent 70%)", marginTop: -6 }} />
-              <div style={{ marginTop: 14, textAlign: "center" }}>
-                <span style={{ fontSize: 17, fontWeight: 900, color: "#fff", letterSpacing: "-0.02em" }}>
-                  RITCHIE <span style={{ color: "var(--gold)" }}>STREET</span>
-                </span>
-                <div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", letterSpacing: "0.1em", textTransform: "uppercase", marginTop: 4 }}>
-                  Second Hand Mobiles · Chennai
-                </div>
-              </div>
+              display: "flex", alignItems: "center", justifyContent: "center",
+              width: "100%",
+              maxWidth: 400,
+            }}>
+              <img src="/media/hero-phone-gold.jpg" alt="Premium Certified Phones"
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  borderRadius: 12,
+                  boxShadow: "0 20px 40px rgba(0,0,0,0.35)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                }}
+              />
             </div>
           </div>
         </section>

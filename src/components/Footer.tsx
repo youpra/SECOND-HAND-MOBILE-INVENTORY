@@ -45,12 +45,10 @@ export async function Footer() {
           <div>
             {/* Logo box */}
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
-              <div style={{
-                width: 36, height: 36, borderRadius: 6,
-                background: "var(--gold)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontWeight: 900, fontSize: 18, color: "var(--dark)", flexShrink: 0,
-              }}>R</div>
+              <img src="/media/logo.png" alt="Ritchie Street" style={{
+                width: 36, height: 36, borderRadius: "50%", objectFit: "cover",
+                border: "1.5px solid var(--gold)", flexShrink: 0,
+              }} />
               <span style={{ fontSize: 16, fontWeight: 900, color: "#fff", letterSpacing: "-0.01em" }}>
                 Ritchie<br />Street
               </span>
