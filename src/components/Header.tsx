@@ -1,104 +1,108 @@
 import React from "react";
 import Link from "next/link";
-import { getSiteSettings } from "@/lib/payload-data";
-import { MessageSquare, Shield } from "lucide-react";
+import { getSiteBrands, getSiteSettings } from "@/lib/payload-data";
+import { Search, User, MessageSquare, Youtube, Send } from "lucide-react";
 
 export async function Header() {
+  const brands = await getSiteBrands();
   const settings = await getSiteSettings();
 
   return (
-    <header style={{
-      position: "sticky", top: 0, zIndex: 50,
-      background: "#ffffff",
-      borderBottom: "1px solid var(--c-border)",
-    }}>
-      {/* ── Red announcement strip ── */}
-      <div style={{
-        background: "var(--c-red)", color: "#fff",
-        textAlign: "center", fontSize: 11, fontWeight: 600,
-        padding: "5px 16px", letterSpacing: "0.02em",
-      }}>
-        📍 Near Ritchie Street, Chennai 600002&nbsp;&nbsp;·&nbsp;&nbsp;
-        📞 7695892772&nbsp;&nbsp;·&nbsp;&nbsp;
-        Subscribe on&nbsp;
-        <a href="https://www.youtube.com/@RITCHIE-STREET-CHANNEL"
-          target="_blank" rel="noopener noreferrer"
-          style={{ color: "#fff", textDecoration: "underline", textUnderlineOffset: 2 }}>
-          YouTube
-        </a>
-        &nbsp;for new arrivals!
+    <header style={{ position: "sticky", top: 0, zIndex: 50 }}>
+
+      {/* ── Row 1: Logo + Search + Actions ── */}
+      <div style={{ background: "var(--dark)", borderBottom: "1px solid var(--border-dark)" }}>
+        <div style={{
+          maxWidth: 1280, margin: "0 auto",
+          padding: "0 20px", height: 58,
+          display: "flex", alignItems: "center", gap: 16,
+        }}>
+
+          {/* Logo box */}
+          <Link href="/" style={{
+            display: "flex", alignItems: "center", gap: 8,
+            textDecoration: "none", flexShrink: 0,
+          }}>
+            <div style={{
+              width: 34, height: 34,
+              background: "var(--gold)",
+              borderRadius: 6,
+              display: "flex", alignItems: "center", justifyContent: "center",
+              fontWeight: 900, fontSize: 16, color: "var(--dark)",
+            }}>R</div>
+            <span style={{
+              fontSize: 15, fontWeight: 800, color: "var(--white)",
+              letterSpacing: "-0.01em",
+            }}>Ritchie Street</span>
+          </Link>
+
+          {/* Search bar */}
+          <div className="search-wrap">
+            <input
+              className="search-input"
+              type="text"
+              placeholder="Search..."
+              readOnly
+              onClick={() => { window.location.href = "/"; }}
+            />
+            <button className="search-btn" aria-label="Search">
+              <Search size={14} color="var(--dark)" />
+            </button>
+          </div>
+
+          {/* Right actions */}
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: "auto", flexShrink: 0 }}>
+            <Link href="/admin" style={{
+              display: "flex", alignItems: "center", gap: 6,
+              color: "rgba(255,255,255,0.7)", textDecoration: "none", fontSize: 13,
+            }}>
+              <User size={18} />
+            </Link>
+            <a href="https://wa.me/c/917695892772" target="_blank" rel="noopener noreferrer"
+              className="btn-dark">
+              Contact
+            </a>
+          </div>
+        </div>
       </div>
 
-      {/* ── Main nav row ── */}
+      {/* ── Row 2: Brand nav tabs + social links ── */}
       <div style={{
-        maxWidth: 1280, margin: "0 auto",
-        padding: "0 20px", height: 60,
-        display: "flex", alignItems: "center",
-        justifyContent: "space-between", gap: 16,
+        background: "var(--dark-2)",
+        borderBottom: "1px solid var(--border-dark)",
+        overflowX: "auto",
       }}>
-
-        {/* Logo */}
-        <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none", flexShrink: 0 }}>
-          <div style={{ position: "relative" }}>
-            <img src="/media/logo.png" alt="RITCHIE STREET"
-              style={{ height: 38, width: 38, borderRadius: "50%", objectFit: "cover", border: "2px solid var(--c-red)" }} />
-            <span className="live-dot" style={{
-              position: "absolute", bottom: 0, right: 0,
-              width: 9, height: 9, borderRadius: "50%",
-              background: "var(--c-green)", border: "2px solid #fff",
-              display: "block",
-            }} />
+        <div style={{
+          maxWidth: 1280, margin: "0 auto",
+          padding: "0 20px",
+          display: "flex", alignItems: "center",
+          justifyContent: "space-between",
+        }}>
+          {/* Brand tabs */}
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <Link href="/" className="nav-tab active">All Phones</Link>
+            {brands.slice(0, 5).map((b: any) => (
+              <Link key={b.id} href={`/?brand=${b.slug}`} className="nav-tab">
+                {b.name}
+              </Link>
+            ))}
           </div>
-          <div style={{ lineHeight: 1.2 }}>
-            <div style={{ fontSize: 16, fontWeight: 900, letterSpacing: "-0.02em", color: "var(--c-text-1)" }}>
-              RITCHIE <span style={{ color: "var(--c-red)" }}>STREET</span>
-            </div>
-            <div style={{ fontSize: 9, fontWeight: 500, color: "var(--c-text-3)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
-              Second Hand Mobiles
-            </div>
-          </div>
-        </Link>
 
-        {/* Desktop Nav — CSS hover via .nav-link class */}
-        <nav className="desktop-nav" style={{ alignItems: "center", gap: 4 }}>
-          {[
-            { href: "/", label: "All Phones", ext: false },
-            { href: "https://wa.me/c/917695892772", label: "WhatsApp Catalog", ext: true },
-            { href: "https://www.youtube.com/@RITCHIE-STREET-CHANNEL", label: "YouTube", ext: true },
-            { href: "https://t.me/VJt6D3tw_K9jYjQ9", label: "Telegram", ext: true },
-          ].map(({ href, label, ext }) => (
-            <a key={label} href={href}
-              {...(ext ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-              className="nav-link"
-              style={{
-                fontSize: 13, fontWeight: 500, color: "var(--c-text-2)",
-                padding: "6px 12px", borderRadius: 6,
-                textDecoration: "none", display: "inline-block",
-              }}>
-              {label}
+          {/* Social nav */}
+          <div style={{ display: "flex", alignItems: "center", flexShrink: 0 }} className="hide-mobile">
+            <a href="https://wa.me/c/917695892772" target="_blank" rel="noopener noreferrer" className="social-nav">
+              <MessageSquare size={13} color="#22c55e" />
+              WhatsApp Catalog
             </a>
-          ))}
-        </nav>
-
-        {/* Right CTAs */}
-        <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-          <Link href="/admin"
-            style={{
-              display: "flex", alignItems: "center", gap: 6,
-              fontSize: 12, fontWeight: 600, color: "var(--c-text-2)",
-              padding: "7px 12px", borderRadius: 7,
-              border: "1px solid var(--c-border)", background: "var(--c-elevated)",
-              textDecoration: "none",
-            }}>
-            <Shield size={13} color="var(--c-red)" />
-            <span>Admin</span>
-          </Link>
-          <a href="https://wa.me/c/917695892772"
-            target="_blank" rel="noopener noreferrer"
-            className="btn-wa">
-            <MessageSquare size={14} />
-            <span>WhatsApp</span>
-          </a>
+            <a href="https://www.youtube.com/@RITCHIE-STREET-CHANNEL" target="_blank" rel="noopener noreferrer" className="social-nav">
+              <Youtube size={13} color="#dc2626" />
+              YouTube
+            </a>
+            <a href="https://t.me/VJt6D3tw_K9jYjQ9" target="_blank" rel="noopener noreferrer" className="social-nav">
+              <Send size={13} color="#38bdf8" />
+              Telegram
+            </a>
+          </div>
         </div>
       </div>
     </header>
