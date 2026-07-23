@@ -125,13 +125,13 @@ export default async function Page({ params }: ProductPageProps) {
   };
 
   return (
-    <div style={{ background: "var(--off-white)", flexGrow: 1 }}>
+    <div style={{ background: "var(--off-white)", flexGrow: 1, width: "100%", overflowX: "hidden" }}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <AnalyticsTrigger productId={product.id} />
 
       {/* ── Breadcrumb ─────────────────────────────── */}
-      <div style={{ background: "var(--dark-2)", borderBottom: "1px solid var(--border-dark)" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", padding: "10px 20px" }}>
+      <div style={{ background: "var(--dark-2)", borderBottom: "1px solid var(--border-dark)", width: "100%" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto", padding: "10px 16px" }}>
           <nav style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, flexWrap: "wrap" }}>
             <Link href="/" style={{ color: "rgba(255,255,255,0.45)", textDecoration: "none" }}>Home</Link>
             <ChevronRight size={12} color="rgba(255,255,255,0.25)" />
@@ -145,7 +145,7 @@ export default async function Page({ params }: ProductPageProps) {
       </div>
 
       {/* ── Main product section ─────────────────── */}
-      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "28px 20px" }}>
+      <div style={{ maxWidth: 1280, margin: "0 auto", padding: "20px 16px", width: "100%" }}>
 
         {/* Top 2-col layout */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 24 }} className="pd-grid">
