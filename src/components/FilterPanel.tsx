@@ -9,34 +9,42 @@ interface FilterPanelProps {
   brands: any[];
 }
 
+const inp: React.CSSProperties = {
+  width: "100%",
+  background: "#fff",
+  border: "1px solid var(--border-light)",
+  borderRadius: 7,
+  color: "var(--dark)",
+  fontSize: 12,
+  padding: "8px 10px",
+  outline: "none",
+  fontFamily: "inherit",
+};
+
+const labelStyle: React.CSSProperties = {
+  fontSize: 10, fontWeight: 800,
+  textTransform: "uppercase", letterSpacing: "0.07em",
+  color: "var(--gray-2)", marginBottom: 6, display: "block",
+};
+
 export function FilterPanel({ categories, brands }: FilterPanelProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
-  // Local state initialized from search params
-  const [search, setSearch] = useState(searchParams.get("search") || "");
-  const [brand, setBrand] = useState(searchParams.get("brand") || "");
-  const [priceMin, setPriceMin] = useState(searchParams.get("priceMin") || "");
-  const [priceMax, setPriceMax] = useState(searchParams.get("priceMax") || "");
-  const [batteryMin, setBatteryMin] = useState(searchParams.get("batteryMin") || "");
-  const [batteryMax, setBatteryMax] = useState(searchParams.get("batteryMax") || "");
-  const [sort, setSort] = useState(searchParams.get("sort") || "newest");
+  const [search, setSearch]               = useState(searchParams.get("search") || "");
+  const [brand, setBrand]                 = useState(searchParams.get("brand") || "");
+  const [priceMin, setPriceMin]           = useState(searchParams.get("priceMin") || "");
+  const [priceMax, setPriceMax]           = useState(searchParams.get("priceMax") || "");
+  const [batteryMin, setBatteryMin]       = useState(searchParams.get("batteryMin") || "");
+  const [batteryMax, setBatteryMax]       = useState(searchParams.get("batteryMax") || "");
+  const [sort, setSort]                   = useState(searchParams.get("sort") || "newest");
+  const [selectedStatuses, setSelectedStatuses]     = useState<string[]>(searchParams.getAll("status"));
+  const [selectedConditions, setSelectedConditions] = useState<string[]>(searchParams.getAll("condition"));
+  const [is5g, setIs5g]                   = useState(searchParams.get("is5g") === "true");
+  const [dualSim, setDualSim]             = useState(searchParams.get("dualSim") === "true");
+  const [mobileOpen, setMobileOpen]       = useState(false);
 
-  const [selectedStatuses, setSelectedStatuses] = useState<string[]>(
-    searchParams.getAll("status")
-  );
-  const [selectedConditions, setSelectedConditions] = useState<string[]>(
-    searchParams.getAll("condition")
-  );
-
-  const [is5g, setIs5g] = useState(searchParams.get("is5g") === "true");
-  const [dualSim, setDualSim] = useState(searchParams.get("dualSim") === "true");
-
-  // Mobile visibility drawer state
-  const [mobileOpen, setMobileOpen] = useState(false);
-
-  // Sync state with url params updates
   useEffect(() => {
     setSearch(searchParams.get("search") || "");
     setBrand(searchParams.get("brand") || "");
@@ -51,436 +59,233 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
     setDualSim(searchParams.get("dualSim") === "true");
   }, [searchParams]);
 
-  // Apply filters function
   const applyFilters = () => {
-    const params = new URLSearchParams();
-
-    if (search) params.set("search", search);
-    if (brand) params.set("brand", brand);
-    if (priceMin) params.set("priceMin", priceMin);
-    if (priceMax) params.set("priceMax", priceMax);
-    if (batteryMin) params.set("batteryMin", batteryMin);
-    if (batteryMax) params.set("batteryMax", batteryMax);
-    if (sort) params.set("sort", sort);
-    if (is5g) params.set("is5g", "true");
-    if (dualSim) params.set("dualSim", "true");
-
-    selectedStatuses.forEach((status) => params.append("status", status));
-    selectedConditions.forEach((cond) => params.append("condition", cond));
-
-    startTransition(() => {
-      router.push(`/?${params.toString()}`);
-    });
+    const p = new URLSearchParams();
+    if (search) p.set("search", search);
+    if (brand) p.set("brand", brand);
+    if (priceMin) p.set("priceMin", priceMin);
+    if (priceMax) p.set("priceMax", priceMax);
+    if (batteryMin) p.set("batteryMin", batteryMin);
+    if (batteryMax) p.set("batteryMax", batteryMax);
+    if (sort) p.set("sort", sort);
+    if (is5g) p.set("is5g", "true");
+    if (dualSim) p.set("dualSim", "true");
+    selectedStatuses.forEach(s => p.append("status", s));
+    selectedConditions.forEach(c => p.append("condition", c));
+    startTransition(() => router.push(`/?${p.toString()}`));
     setMobileOpen(false);
   };
 
-  // Clear all filters
   const resetFilters = () => {
-    setSearch("");
-    setBrand("");
-    setPriceMin("");
-    setPriceMax("");
-    setBatteryMin("");
-    setBatteryMax("");
-    setSort("newest");
-    setSelectedStatuses([]);
-    setSelectedConditions([]);
-    setIs5g(false);
-    setDualSim(false);
-
-    startTransition(() => {
-      router.push("/");
-    });
+    setSearch(""); setBrand(""); setPriceMin(""); setPriceMax("");
+    setBatteryMin(""); setBatteryMax(""); setSort("newest");
+    setSelectedStatuses([]); setSelectedConditions([]);
+    setIs5g(false); setDualSim(false);
+    startTransition(() => router.push("/"));
     setMobileOpen(false);
   };
 
-  const handleStatusToggle = (status: string) => {
-    setSelectedStatuses((prev) =>
-      prev.includes(status) ? prev.filter((s) => s !== status) : [...prev, status]
-    );
-  };
+  const toggleStatus    = (s: string) => setSelectedStatuses(p => p.includes(s) ? p.filter(x => x !== s) : [...p, s]);
+  const toggleCondition = (c: string) => setSelectedConditions(p => p.includes(c) ? p.filter(x => x !== c) : [...p, c]);
 
-  const handleConditionToggle = (cond: string) => {
-    setSelectedConditions((prev) =>
-      prev.includes(cond) ? prev.filter((c) => c !== cond) : [...prev, cond]
-    );
-  };
+  /* ─── shared filter body ─── */
+  const FilterBody = ({ isMobile = false }: { isMobile?: boolean }) => (
+    <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
 
-  const handleSearchKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      applyFilters();
-    }
-  };
+      {/* Brand */}
+      <div>
+        <label style={labelStyle}>Brand</label>
+        <select value={brand} onChange={e => setBrand(e.target.value)} style={{ ...inp, cursor: "pointer" }}>
+          <option value="">All Brands</option>
+          {brands.map(b => <option key={b.id} value={b.slug}>{b.name}</option>)}
+        </select>
+      </div>
 
-  return (
-    <div className="w-full lg:w-64 flex-shrink-0">
-      {/* Quick Search & Sort bar (Desktop and Mobile) */}
-      <div className="flex flex-col sm:flex-row lg:flex-col gap-3 mb-6">
-        <div className="relative flex-grow">
-          <input
-            type="text"
-            placeholder="Search brand, model, title..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            onKeyDown={handleSearchKeyPress}
-            className="w-full bg-slate-900 border border-slate-800 rounded-xl py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-red-500 transition-colors"
-          />
-          <Search className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
-        </div>
-
-        <div className="flex gap-2">
-          {/* Mobile Filter Button */}
-          <button
-            onClick={() => setMobileOpen(true)}
-            className="flex lg:hidden items-center gap-1.5 rounded-xl border border-slate-800 bg-slate-900 px-4 py-2.5 text-sm font-semibold text-slate-300 hover:text-white"
-          >
-            <Sliders className="h-4 w-4" />
-            Filters
-          </button>
-
-          {/* Sort selection */}
-          <select
-            value={sort}
-            onChange={(e) => {
-              setSort(e.target.value);
-              const params = new URLSearchParams(searchParams.toString());
-              params.set("sort", e.target.value);
-              router.push(`/?${params.toString()}`);
-            }}
-            className="flex-grow bg-slate-900 border border-slate-800 rounded-xl py-2.5 px-4 text-sm text-slate-300 focus:outline-none focus:border-red-500 transition-colors cursor-pointer"
-          >
-            <option value="newest">Sort: Newest</option>
-            <option value="oldest">Sort: Oldest</option>
-            <option value="priceAsc">Price: Low to High</option>
-            <option value="priceDesc">Price: High to Low</option>
-            <option value="viewsDesc">Most Viewed</option>
-            <option value="contactsDesc">Most Contacted</option>
-            <option value="recentlyUpdated">Recently Updated</option>
-          </select>
+      {/* Status */}
+      <div>
+        <label style={labelStyle}>Status</label>
+        <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+          {["available", "reserved", "sold", "coming-soon", "repairing"].map(s => {
+            const active = selectedStatuses.includes(s);
+            return (
+              <button key={s} onClick={() => toggleStatus(s)} style={{
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                padding: "7px 10px", borderRadius: 6, fontSize: 12, fontWeight: 500,
+                cursor: "pointer", textAlign: "left", textTransform: "capitalize",
+                border: active ? "1px solid var(--gold-border)" : "1px solid var(--border-light)",
+                background: active ? "var(--gold-dim)" : "#fff",
+                color: active ? "var(--dark)" : "var(--gray-2)",
+                fontFamily: "inherit",
+              }}>
+                <span>{s.replace("-", " ")}</span>
+                {active && <Check size={12} color="var(--gold)" />}
+              </button>
+            );
+          })}
         </div>
       </div>
 
-      {/* Filter Sidebar - Desktop Only */}
-      <div className="hidden lg:flex flex-col gap-6 rounded-2xl border border-slate-800 bg-slate-900/20 p-5 backdrop-blur-sm">
-        <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
-          <h2 className="font-bold text-slate-200 flex items-center gap-2">
-            <Sliders className="h-4 w-4 text-red-500" />
-            Filters
-          </h2>
-          <button
-            onClick={resetFilters}
-            className="text-xs text-slate-500 hover:text-red-400 flex items-center gap-1 transition-colors"
-          >
-            <RotateCcw className="h-3 w-3" />
-            Reset
-          </button>
-        </div>
-
-        {/* Brands */}
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Brand</label>
-          <select
-            value={brand}
-            onChange={(e) => setBrand(e.target.value)}
-            className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-sm text-slate-300 focus:outline-none focus:border-red-500"
-          >
-            <option value="">All Brands</option>
-            {brands.map((b) => (
-              <option key={b.id} value={b.slug}>
-                {b.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Statuses */}
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Status</label>
-          <div className="flex flex-col gap-1.5">
-            {["available", "reserved", "sold", "coming-soon", "repairing"].map((status) => (
-              <button
-                key={status}
-                onClick={() => handleStatusToggle(status)}
-                className={`flex items-center justify-between text-left text-xs rounded-lg px-3 py-2 border transition-all ${
-                  selectedStatuses.includes(status)
-                    ? "bg-red-600/10 text-red-400 border-red-500/30 font-semibold"
-                    : "bg-slate-950/40 text-slate-400 border-slate-800/80 hover:border-slate-700"
-                }`}
-              >
-                <span className="capitalize">{status.replace("-", " ")}</span>
-                {selectedStatuses.includes(status) && <Check className="h-3.5 w-3.5" />}
+      {/* Condition */}
+      <div>
+        <label style={labelStyle}>Condition</label>
+        <div style={{ display: "flex", flexDirection: "column", gap: 5 }}>
+          {[{ label: "Like New", val: "like-new" }, { label: "Excellent", val: "excellent" }, { label: "Good", val: "good" }, { label: "Fair", val: "fair" }].map(c => {
+            const active = selectedConditions.includes(c.val);
+            return (
+              <button key={c.val} onClick={() => toggleCondition(c.val)} style={{
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                padding: "7px 10px", borderRadius: 6, fontSize: 12, fontWeight: 500,
+                cursor: "pointer", textAlign: "left",
+                border: active ? "1px solid var(--gold-border)" : "1px solid var(--border-light)",
+                background: active ? "var(--gold-dim)" : "#fff",
+                color: active ? "var(--dark)" : "var(--gray-2)",
+                fontFamily: "inherit",
+              }}>
+                <span>{c.label}</span>
+                {active && <Check size={12} color="var(--gold)" />}
               </button>
-            ))}
-          </div>
+            );
+          })}
         </div>
+      </div>
 
-        {/* Conditions */}
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Condition</label>
-          <div className="flex flex-col gap-1.5">
-            {[
-              { label: "Like New", val: "like-new" },
-              { label: "Excellent", val: "excellent" },
-              { label: "Good", val: "good" },
-              { label: "Fair", val: "fair" },
-            ].map((cond) => (
-              <button
-                key={cond.val}
-                onClick={() => handleConditionToggle(cond.val)}
-                className={`flex items-center justify-between text-left text-xs rounded-lg px-3 py-2 border transition-all ${
-                  selectedConditions.includes(cond.val)
-                    ? "bg-red-600/10 text-red-400 border-red-500/30 font-semibold"
-                    : "bg-slate-950/40 text-slate-400 border-slate-800/80 hover:border-slate-700"
-                }`}
-              >
-                <span>{cond.label}</span>
-                {selectedConditions.includes(cond.val) && <Check className="h-3.5 w-3.5" />}
-              </button>
-            ))}
-          </div>
+      {/* Price range */}
+      <div>
+        <label style={labelStyle}>Price Range (₹)</label>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <input type="number" placeholder="Min" value={priceMin} onChange={e => setPriceMin(e.target.value)} style={{ ...inp, width: "50%" }} />
+          <span style={{ color: "var(--gray-2)", fontSize: 12 }}>–</span>
+          <input type="number" placeholder="Max" value={priceMax} onChange={e => setPriceMax(e.target.value)} style={{ ...inp, width: "50%" }} />
         </div>
+      </div>
 
-        {/* Price Range */}
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Price Range (₹)</label>
-          <div className="flex items-center gap-2">
-            <input
-              type="number"
-              placeholder="Min"
-              value={priceMin}
-              onChange={(e) => setPriceMin(e.target.value)}
-              className="w-1/2 bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-red-500"
-            />
-            <span className="text-slate-600">-</span>
-            <input
-              type="number"
-              placeholder="Max"
-              value={priceMax}
-              onChange={(e) => setPriceMax(e.target.value)}
-              className="w-1/2 bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-red-500"
-            />
-          </div>
+      {/* Battery health */}
+      <div>
+        <label style={labelStyle}>Battery Health (%)</label>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <input type="number" placeholder="Min" value={batteryMin} onChange={e => setBatteryMin(e.target.value)} style={{ ...inp, width: "50%" }} />
+          <span style={{ color: "var(--gray-2)", fontSize: 12 }}>–</span>
+          <input type="number" placeholder="Max" value={batteryMax} onChange={e => setBatteryMax(e.target.value)} style={{ ...inp, width: "50%" }} />
         </div>
+      </div>
 
-        {/* Battery Health Range */}
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Battery Health (%)</label>
-          <div className="flex items-center gap-2">
-            <input
-              type="number"
-              placeholder="Min"
-              value={batteryMin}
-              onChange={(e) => setBatteryMin(e.target.value)}
-              className="w-1/2 bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-red-500"
-            />
-            <span className="text-slate-600">-</span>
-            <input
-              type="number"
-              placeholder="Max"
-              value={batteryMax}
-              onChange={(e) => setBatteryMax(e.target.value)}
-              className="w-1/2 bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-red-500"
-            />
-          </div>
-        </div>
-
-        {/* Switches */}
-        <div className="flex flex-col gap-3 pt-2 border-t border-slate-800/80">
-          <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-300">
-            <input
-              type="checkbox"
-              checked={is5g}
-              onChange={(e) => setIs5g(e.target.checked)}
-              className="rounded bg-slate-950 border-slate-800 text-red-600 focus:ring-red-500"
-            />
-            <span>5G Supported Only</span>
+      {/* Toggles */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 8, paddingTop: 4, borderTop: "1px solid var(--border-light)" }}>
+        {[{ state: is5g, set: setIs5g, label: "5G Only" }, { state: dualSim, set: setDualSim, label: "Dual SIM Only" }].map(({ state, set, label }) => (
+          <label key={label} style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", fontSize: 12, color: "var(--dark)", fontWeight: 500 }}>
+            <input type="checkbox" checked={state} onChange={e => set(e.target.checked)}
+              style={{ width: 14, height: 14, cursor: "pointer", accentColor: "var(--gold)" }} />
+            {label}
           </label>
-          <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-300">
-            <input
-              type="checkbox"
-              checked={dualSim}
-              onChange={(e) => setDualSim(e.target.checked)}
-              className="rounded bg-slate-950 border-slate-800 text-red-600 focus:ring-red-500"
-            />
-            <span>Dual SIM Only</span>
-          </label>
+        ))}
+      </div>
+
+      {/* Apply */}
+      <button onClick={applyFilters} disabled={isPending} style={{
+        width: "100%", padding: "10px", borderRadius: 8, border: "none",
+        background: "var(--dark)", color: "var(--gold)",
+        fontSize: 12, fontWeight: 800, letterSpacing: "0.06em",
+        textTransform: "uppercase", cursor: "pointer",
+        opacity: isPending ? 0.6 : 1, fontFamily: "inherit",
+      }}>
+        {isPending ? "Applying…" : "Apply Filters"}
+      </button>
+    </div>
+  );
+
+  return (
+    <div style={{ width: "100%", flexShrink: 0 }} className="fp-wrap">
+
+      {/* ── Sort + mobile trigger row ── */}
+      <div style={{ display: "flex", gap: 8, marginBottom: 14, alignItems: "center" }}>
+        {/* Search */}
+        <div style={{ position: "relative", flexGrow: 1 }}>
+          <input type="text" placeholder="Search brand, model…" value={search}
+            onChange={e => setSearch(e.target.value)}
+            onKeyDown={e => e.key === "Enter" && applyFilters()}
+            style={{ ...inp, paddingLeft: 32 }} />
+          <Search size={13} color="var(--gray-2)" style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }} />
         </div>
 
-        {/* Apply Button */}
-        <button
-          onClick={applyFilters}
-          disabled={isPending}
-          className="w-full rounded-xl bg-red-600 py-2.5 text-sm font-bold text-white shadow-lg shadow-red-900/20 hover:bg-red-500 active:scale-[0.98] transition-all disabled:opacity-50"
-        >
-          {isPending ? "Applying..." : "Apply Filters"}
+        {/* Sort */}
+        <select value={sort} onChange={e => { setSort(e.target.value); const p = new URLSearchParams(searchParams.toString()); p.set("sort", e.target.value); router.push(`/?${p.toString()}`); }}
+          style={{ ...inp, width: "auto", flexShrink: 0, cursor: "pointer" }}>
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="priceAsc">Price ↑</option>
+          <option value="priceDesc">Price ↓</option>
+          <option value="viewsDesc">Most Viewed</option>
+        </select>
+
+        {/* Mobile filter btn */}
+        <button onClick={() => setMobileOpen(true)} style={{
+          display: "flex", alignItems: "center", gap: 6,
+          padding: "8px 12px", borderRadius: 7, border: "1px solid var(--border-light)",
+          background: "#fff", color: "var(--dark)", fontSize: 12, fontWeight: 600,
+          cursor: "pointer", fontFamily: "inherit", flexShrink: 0,
+        }} className="fp-mobile-btn">
+          <Sliders size={13} /> Filters
         </button>
       </div>
 
-      {/* Mobile Drawer Backdrop & Menu */}
+      {/* ── Desktop sidebar ── */}
+      <div style={{
+        background: "#fff",
+        border: "1px solid var(--border-light)",
+        borderRadius: 10, padding: 16,
+      }} className="fp-sidebar">
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16, paddingBottom: 12, borderBottom: "1px solid var(--border-light)" }}>
+          <span style={{ fontSize: 13, fontWeight: 800, color: "var(--dark)", display: "flex", alignItems: "center", gap: 6 }}>
+            <Sliders size={13} color="var(--gold)" /> Filters
+          </span>
+          <button onClick={resetFilters} style={{
+            display: "flex", alignItems: "center", gap: 4,
+            fontSize: 11, color: "var(--gray-2)", background: "none", border: "none",
+            cursor: "pointer", fontFamily: "inherit",
+          }}>
+            <RotateCcw size={11} /> Reset
+          </button>
+        </div>
+        <FilterBody />
+      </div>
+
+      {/* ── Mobile drawer ── */}
       {mobileOpen && (
-        <div className="fixed inset-0 z-50 flex justify-end bg-black/60 backdrop-blur-sm lg:hidden">
-          <div className="w-full max-w-sm h-full bg-slate-950 border-l border-slate-800 p-6 overflow-y-auto flex flex-col gap-6">
-            <div className="flex items-center justify-between border-b border-slate-850 pb-3">
-              <h2 className="font-bold text-white flex items-center gap-2 text-lg">
-                <Sliders className="h-5 w-5 text-red-400" />
-                Filters
-              </h2>
-              <button
-                onClick={() => setMobileOpen(false)}
-                className="rounded-lg p-1.5 hover:bg-slate-900 text-slate-400 hover:text-white"
-              >
-                <X className="h-5 w-5" />
+        <div style={{ position: "fixed", inset: 0, zIndex: 50, background: "rgba(0,0,0,0.45)", display: "flex", justifyContent: "flex-end" }}>
+          <div style={{
+            width: "min(340px, 92vw)", height: "100%",
+            background: "#fff", padding: 20, overflowY: "auto",
+            display: "flex", flexDirection: "column", gap: 0,
+          }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20, paddingBottom: 14, borderBottom: "1px solid var(--border-light)" }}>
+              <span style={{ fontSize: 15, fontWeight: 800, color: "var(--dark)", display: "flex", alignItems: "center", gap: 6 }}>
+                <Sliders size={15} color="var(--gold)" /> Filters
+              </span>
+              <button onClick={() => setMobileOpen(false)} style={{ background: "none", border: "none", cursor: "pointer" }}>
+                <X size={20} color="var(--gray-2)" />
               </button>
             </div>
-
-            {/* Mobile Brand */}
-            <div className="flex flex-col gap-2">
-              <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Brand</label>
-              <select
-                value={brand}
-                onChange={(e) => setBrand(e.target.value)}
-                className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm text-white"
-              >
-                <option value="">All Brands</option>
-                {brands.map((b) => (
-                  <option key={b.id} value={b.slug}>
-                    {b.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Mobile Statuses */}
-            <div className="flex flex-col gap-2">
-              <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Status</label>
-              <div className="grid grid-cols-2 gap-2">
-                {["available", "reserved", "sold", "coming-soon", "repairing"].map((status) => (
-                  <button
-                    key={status}
-                    onClick={() => handleStatusToggle(status)}
-                    className={`flex items-center justify-between text-left text-xs rounded-lg px-3 py-2 border transition-all ${
-                      selectedStatuses.includes(status)
-                        ? "bg-red-600/10 text-red-400 border-red-500/30 font-semibold"
-                        : "bg-slate-900/40 text-slate-400 border-slate-800/80 hover:border-slate-700"
-                    }`}
-                  >
-                    <span className="capitalize">{status.replace("-", " ")}</span>
-                    {selectedStatuses.includes(status) && <Check className="h-3.5 w-3.5" />}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Mobile Conditions */}
-            <div className="flex flex-col gap-2">
-              <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Condition</label>
-              <div className="grid grid-cols-2 gap-2">
-                {[
-                  { label: "Like New", val: "like-new" },
-                  { label: "Excellent", val: "excellent" },
-                  { label: "Good", val: "good" },
-                  { label: "Fair", val: "fair" },
-                ].map((cond) => (
-                  <button
-                    key={cond.val}
-                    onClick={() => handleConditionToggle(cond.val)}
-                    className={`flex items-center justify-between text-left text-xs rounded-lg px-3 py-2 border transition-all ${
-                      selectedConditions.includes(cond.val)
-                        ? "bg-red-600/10 text-red-400 border-red-500/30 font-semibold"
-                        : "bg-slate-900/40 text-slate-400 border-slate-800/80 hover:border-slate-700"
-                    }`}
-                  >
-                    <span>{cond.label}</span>
-                    {selectedConditions.includes(cond.val) && <Check className="h-3.5 w-3.5" />}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Mobile Price */}
-            <div className="flex flex-col gap-2">
-              <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Price Range (₹)</label>
-              <div className="flex items-center gap-2">
-                <input
-                  type="number"
-                  placeholder="Min"
-                  value={priceMin}
-                  onChange={(e) => setPriceMin(e.target.value)}
-                  className="w-1/2 bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-xs text-white"
-                />
-                <span className="text-slate-600">-</span>
-                <input
-                  type="number"
-                  placeholder="Max"
-                  value={priceMax}
-                  onChange={(e) => setPriceMax(e.target.value)}
-                  className="w-1/2 bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-xs text-white"
-                />
-              </div>
-            </div>
-
-            {/* Mobile Battery */}
-            <div className="flex flex-col gap-2">
-              <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Battery Health (%)</label>
-              <div className="flex items-center gap-2">
-                <input
-                  type="number"
-                  placeholder="Min"
-                  value={batteryMin}
-                  onChange={(e) => setBatteryMin(e.target.value)}
-                  className="w-1/2 bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-xs text-white"
-                />
-                <span className="text-slate-600">-</span>
-                <input
-                  type="number"
-                  placeholder="Max"
-                  value={batteryMax}
-                  onChange={(e) => setBatteryMax(e.target.value)}
-                  className="w-1/2 bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-xs text-white"
-                />
-              </div>
-            </div>
-
-            {/* Mobile Switches */}
-            <div className="flex flex-col gap-3 pt-2 border-t border-slate-850">
-              <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-300">
-                <input
-                  type="checkbox"
-                  checked={is5g}
-                  onChange={(e) => setIs5g(e.target.checked)}
-                  className="rounded bg-slate-900 border-slate-800 text-red-600 focus:ring-red-500"
-                />
-                <span>5G Supported Only</span>
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer text-xs text-slate-300">
-                <input
-                  type="checkbox"
-                  checked={dualSim}
-                  onChange={(e) => setDualSim(e.target.checked)}
-                  className="rounded bg-slate-900 border-slate-800 text-red-600 focus:ring-red-500"
-                />
-                <span>Dual SIM Only</span>
-              </label>
-            </div>
-
-            {/* Mobile Action Buttons */}
-            <div className="mt-auto pt-6 flex gap-3">
-              <button
-                onClick={resetFilters}
-                className="w-1/2 rounded-xl border border-slate-800 bg-slate-900 py-3 text-sm font-semibold text-slate-300 hover:text-white"
-              >
-                Reset All
-              </button>
-              <button
-                onClick={applyFilters}
-                className="w-1/2 rounded-xl bg-red-600 py-3 text-sm font-bold text-white"
-              >
-                Apply Filters
-              </button>
-            </div>
+            <FilterBody isMobile />
+            <button onClick={resetFilters} style={{
+              marginTop: 10, width: "100%", padding: "10px", borderRadius: 8,
+              border: "1px solid var(--border-light)", background: "var(--off-white)",
+              color: "var(--gray-2)", fontSize: 12, fontWeight: 600,
+              cursor: "pointer", fontFamily: "inherit",
+            }}>Reset All</button>
           </div>
         </div>
       )}
+
+      <style>{`
+        .fp-wrap    { max-width: 220px; }
+        .fp-sidebar { display: block; }
+        .fp-mobile-btn { display: none !important; }
+        @media (max-width: 1023px) {
+          .fp-wrap        { max-width: 100%; }
+          .fp-sidebar     { display: none !important; }
+          .fp-mobile-btn  { display: flex !important; }
+        }
+      `}</style>
     </div>
   );
 }
