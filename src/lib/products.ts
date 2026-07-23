@@ -22,19 +22,17 @@ export async function getFilteredProducts(params: FilterParams) {
     const payload = await getPayload({ config });
     const query: any = { and: [] };
 
-    // 1. Category Filter (by slug)
-    if (params.category) {
-      const categoryDoc = await payload.find({
-        collection: "categories",
-        where: { slug: { equals: params.category } },
-        limit: 1,
-      });
-      if (categoryDoc.docs.length > 0) {
-        query.and.push({ category: { equals: categoryDoc.docs[0].id } });
-      } else {
-        // Return empty if category is specified but not found
-        return [];
-      }
+    // 1. Force Category Filter to "Mobile Phones" (mobile-phones slug)
+    const categoryDoc = await payload.find({
+      collection: "categories",
+      where: { slug: { equals: "mobile-phones" } },
+      limit: 1,
+    });
+    if (categoryDoc.docs.length > 0) {
+      query.and.push({ category: { equals: categoryDoc.docs[0].id } });
+    } else {
+      // If categories aren't seeded yet, return empty
+      return [];
     }
 
     // 2. Brand Filter (by slug)

@@ -91,7 +91,7 @@ export function ProductGallery({ images }: ProductGalleryProps) {
               key={idx}
               onClick={() => handleThumbnailClick(idx)}
               className={`relative aspect-square w-16 sm:w-20 flex-shrink-0 overflow-hidden rounded-xl border bg-slate-900/60 p-1 transition-all ${
-                selectedIndex === idx ? "border-indigo-500 ring-2 ring-indigo-500/20" : "border-slate-800 hover:border-slate-700"
+                selectedIndex === idx ? "border-red-500 ring-2 ring-red-500/20" : "border-slate-800 hover:border-slate-700"
               }`}
             >
               <img

@@ -1,7 +1,7 @@
 import React from "react";
 import { getPayload } from "payload";
 import config from "../payload.config";
-import { Eye, MessageSquare, Tag, ShoppingBag, FolderOpen, Award, BarChart2 } from "lucide-react";
+import { Eye, MessageSquare, ShoppingBag, FolderOpen, Award, BarChart2 } from "lucide-react";
 
 export async function AdminDashboard() {
   const payload = await getPayload({ config });
@@ -57,90 +57,94 @@ export async function AdminDashboard() {
     console.error("Failed to fetch dashboard metrics:", err);
   }
 
+  const fontStyle = {
+    fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif',
+  };
+
   return (
-    <div className="w-full flex flex-col gap-6 py-6 px-1">
+    <div style={{ ...fontStyle, width: "100%", display: "flex", flexDirection: "column", gap: "24px", padding: "20px 0", boxSizing: "border-box" }}>
       {/* Dashboard Section Title */}
-      <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid #27272a", paddingBottom: "16px" }}>
         <div>
-          <h1 className="text-2xl font-extrabold text-white tracking-tight">Inventory Analytics</h1>
-          <p className="text-zinc-500 text-xs mt-1">Real-time statistics of second-hand electronic assets</p>
+          <h1 style={{ margin: 0, fontSize: "24px", fontWeight: 800, color: "#ffffff", letterSpacing: "-0.025em" }}>Inventory Analytics</h1>
+          <p style={{ margin: "4px 0 0 0", color: "#71717a", fontSize: "12px" }}>Real-time statistics of second-hand electronic assets</p>
         </div>
-        <div className="flex items-center gap-1.5 rounded-lg border border-zinc-800 bg-zinc-900/50 px-3 py-1.5 text-xs text-zinc-400">
-          <BarChart2 className="h-3.5 w-3.5 text-indigo-400" />
+        <div style={{ display: "flex", alignItems: "center", gap: "6px", borderRadius: "8px", border: "1px solid #27272a", backgroundColor: "rgba(39, 39, 42, 0.5)", padding: "6px 12px", fontSize: "12px", color: "#a1a1aa" }}>
+          <BarChart2 size={14} style={{ color: "#ef4444" }} />
           Live Metrics
         </div>
       </div>
 
       {/* Analytics Cards Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))", gap: "16px", width: "100%" }}>
         {/* Total Products */}
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider">Total Products</span>
-            <ShoppingBag className="h-4 w-4 text-indigo-400" />
+        <div style={{ borderRadius: "12px", border: "1px solid #27272a", backgroundColor: "rgba(24, 24, 27, 0.4)", padding: "16px", display: "flex", flexDirection: "column", gap: "12px", boxSizing: "border-box" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+            <span style={{ color: "#71717a", fontSize: "10px", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.05em" }}>Total Products</span>
+            <ShoppingBag size={16} style={{ color: "#ef4444" }} />
           </div>
-          <div className="text-2xl font-black text-white">{totalProducts}</div>
+          <div style={{ fontSize: "24px", fontWeight: 900, color: "#ffffff" }}>{totalProducts}</div>
         </div>
 
         {/* Available */}
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider">Available</span>
-            <span className="h-2 w-2 rounded-full bg-emerald-500" />
+        <div style={{ borderRadius: "12px", border: "1px solid #27272a", backgroundColor: "rgba(24, 24, 27, 0.4)", padding: "16px", display: "flex", flexDirection: "column", gap: "12px", boxSizing: "border-box" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyBetween: "space-between", width: "100%", justifyContent: "space-between" }}>
+            <span style={{ color: "#71717a", fontSize: "10px", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.05em" }}>Available</span>
+            <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#10b981" }} />
           </div>
-          <div className="text-2xl font-black text-white">{availableProducts}</div>
+          <div style={{ fontSize: "24px", fontWeight: 900, color: "#ffffff" }}>{availableProducts}</div>
         </div>
 
         {/* Reserved */}
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider">Reserved</span>
-            <span className="h-2 w-2 rounded-full bg-amber-500" />
+        <div style={{ borderRadius: "12px", border: "1px solid #27272a", backgroundColor: "rgba(24, 24, 27, 0.4)", padding: "16px", display: "flex", flexDirection: "column", gap: "12px", boxSizing: "border-box" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+            <span style={{ color: "#71717a", fontSize: "10px", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.05em" }}>Reserved</span>
+            <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#f59e0b" }} />
           </div>
-          <div className="text-2xl font-black text-white">{reservedProducts}</div>
+          <div style={{ fontSize: "24px", fontWeight: 900, color: "#ffffff" }}>{reservedProducts}</div>
         </div>
 
         {/* Sold */}
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider">Sold</span>
-            <span className="h-2 w-2 rounded-full bg-zinc-500" />
+        <div style={{ borderRadius: "12px", border: "1px solid #27272a", backgroundColor: "rgba(24, 24, 27, 0.4)", padding: "16px", display: "flex", flexDirection: "column", gap: "12px", boxSizing: "border-box" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+            <span style={{ color: "#71717a", fontSize: "10px", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.05em" }}>Sold</span>
+            <span style={{ width: "8px", height: "8px", borderRadius: "50%", backgroundColor: "#71717a" }} />
           </div>
-          <div className="text-2xl font-black text-white">{soldProducts}</div>
+          <div style={{ fontSize: "24px", fontWeight: 900, color: "#ffffff" }}>{soldProducts}</div>
         </div>
 
         {/* Categories */}
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider">Categories</span>
-            <FolderOpen className="h-4 w-4 text-purple-400" />
+        <div style={{ borderRadius: "12px", border: "1px solid #27272a", backgroundColor: "rgba(24, 24, 27, 0.4)", padding: "16px", display: "flex", flexDirection: "column", gap: "12px", boxSizing: "border-box" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+            <span style={{ color: "#71717a", fontSize: "10px", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.05em" }}>Categories</span>
+            <FolderOpen size={16} style={{ color: "#c084fc" }} />
           </div>
-          <div className="text-2xl font-black text-white">{categoriesCount}</div>
+          <div style={{ fontSize: "24px", fontWeight: 900, color: "#ffffff" }}>{categoriesCount}</div>
         </div>
 
         {/* Brands */}
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/40 p-4">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider">Brands</span>
-            <Award className="h-4 w-4 text-cyan-400" />
+        <div style={{ borderRadius: "12px", border: "1px solid #27272a", backgroundColor: "rgba(24, 24, 27, 0.4)", padding: "16px", display: "flex", flexDirection: "column", gap: "12px", boxSizing: "border-box" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+            <span style={{ color: "#71717a", fontSize: "10px", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.05em" }}>Brands</span>
+            <Award size={16} style={{ color: "#22d3ee" }} />
           </div>
-          <div className="text-2xl font-black text-white">{brandsCount}</div>
+          <div style={{ fontSize: "24px", fontWeight: 900, color: "#ffffff" }}>{brandsCount}</div>
         </div>
       </div>
 
       {/* Top Performing Grids */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px", width: "100%" }}>
         {/* Most Viewed */}
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-5">
-          <h3 className="font-bold text-white text-sm mb-4 flex items-center gap-1.5 border-b border-zinc-800 pb-2.5">
-            <Eye className="h-4 w-4 text-indigo-400" />
+        <div style={{ borderRadius: "12px", border: "1px solid #27272a", backgroundColor: "rgba(24, 24, 27, 0.3)", padding: "20px", boxSizing: "border-box" }}>
+          <h3 style={{ margin: "0 0 16px 0", fontWeight: "bold", color: "#ffffff", fontSize: "14px", display: "flex", alignItems: "center", gap: "8px", borderBottom: "1px solid #27272a", paddingBottom: "10px" }}>
+            <Eye size={16} style={{ color: "#ef4444" }} />
             Most Viewed Products
           </h3>
-          <div className="flex flex-col gap-2">
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {topViewed.map((prod: any) => (
-              <div key={prod.id} className="flex items-center justify-between text-xs py-1">
-                <span className="text-zinc-300 font-medium truncate max-w-xs">{prod.title}</span>
-                <span className="text-zinc-500 flex items-center gap-1 bg-zinc-950 px-2 py-0.5 rounded border border-zinc-800">
+              <div key={prod.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: "12px", padding: "4px 0" }}>
+                <span style={{ color: "#d4d4d8", fontWeight: 500, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: "70%" }}>{prod.title}</span>
+                <span style={{ display: "flex", alignItems: "center", gap: "4px", color: "#a1a1aa", backgroundColor: "#09090b", padding: "2px 8px", borderRadius: "4px", border: "1px solid #27272a", fontSize: "11px", whiteSpace: "nowrap" }}>
                   {prod.viewCount || 0} views
                 </span>
               </div>
@@ -149,16 +153,16 @@ export async function AdminDashboard() {
         </div>
 
         {/* Most Contacted */}
-        <div className="rounded-xl border border-zinc-800 bg-zinc-900/30 p-5">
-          <h3 className="font-bold text-white text-sm mb-4 flex items-center gap-1.5 border-b border-zinc-800 pb-2.5">
-            <MessageSquare className="h-4 w-4 text-emerald-400" />
+        <div style={{ borderRadius: "12px", border: "1px solid #27272a", backgroundColor: "rgba(24, 24, 27, 0.3)", padding: "20px", boxSizing: "border-box" }}>
+          <h3 style={{ margin: "0 0 16px 0", fontWeight: "bold", color: "#ffffff", fontSize: "14px", display: "flex", alignItems: "center", gap: "8px", borderBottom: "1px solid #27272a", paddingBottom: "10px" }}>
+            <MessageSquare size={16} style={{ color: "#34d399" }} />
             Most Contacted (WhatsApp clicks)
           </h3>
-          <div className="flex flex-col gap-2">
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
             {topContacted.map((prod: any) => (
-              <div key={prod.id} className="flex items-center justify-between text-xs py-1">
-                <span className="text-zinc-300 font-medium truncate max-w-xs">{prod.title}</span>
-                <span className="text-emerald-400 flex items-center gap-1 bg-emerald-950/20 border border-emerald-900/30 px-2 py-0.5 rounded">
+              <div key={prod.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", fontSize: "12px", padding: "4px 0" }}>
+                <span style={{ color: "#d4d4d8", fontWeight: 500, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: "70%" }}>{prod.title}</span>
+                <span style={{ display: "flex", alignItems: "center", gap: "4px", color: "#34d399", backgroundColor: "rgba(4, 120, 87, 0.1)", padding: "2px 8px", borderRadius: "4px", border: "1px solid rgba(4, 120, 87, 0.2)", fontSize: "11px", whiteSpace: "nowrap" }}>
                   {prod.whatsappClickCount || 0} clicks
                 </span>
               </div>

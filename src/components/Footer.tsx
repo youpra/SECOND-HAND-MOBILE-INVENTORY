@@ -17,13 +17,13 @@ export async function Footer() {
           <div className="space-y-4">
             <span className="text-lg font-extrabold tracking-tight text-white">
               SecondHand
-              <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent">
                 {" "}
-                Electronics
+                Mobiles
               </span>
             </span>
             <p className="text-sm text-slate-500 leading-relaxed">
-              Find premium used mobile phones, laptops, smartwatches, and more. Check availability
+              Find verified pre-owned smartphones and premium mobile repair services. Check availability
               instantly and contact us directly to purchase.
             </p>
           </div>
@@ -79,7 +79,7 @@ export async function Footer() {
             <p className="text-sm text-slate-500 leading-relaxed mb-4">
               Our inventory is updated in real-time. Avoid unnecessary WhatsApp back-and-forth by checking Availability tags.
             </p>
-            <div className="flex items-center gap-2 text-xs text-indigo-400 bg-indigo-950/40 border border-indigo-900/50 rounded-lg p-3">
+            <div className="flex items-center gap-2 text-xs text-red-400 bg-red-950/40 border border-red-900/50 rounded-lg p-3">
               <Shield className="h-4 w-4 flex-shrink-0" />
               <span>Genuinely checked devices only.</span>
             </div>
@@ -88,7 +88,7 @@ export async function Footer() {
 
         <div className="border-t border-slate-900 mt-8 pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
           <p>
-            &copy; {new Date().getFullYear()} SecondHand Electronics. All rights reserved.
+            &copy; {new Date().getFullYear()} SecondHand Mobiles & Repairing. All rights reserved.
           </p>
           <div className="flex gap-4">
             <Link href="/admin" className="hover:text-slate-300">

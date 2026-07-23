@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Search, RotateCcw, X, Sliders, ChevronDown, Check } from "lucide-react";
+import { Search, RotateCcw, X, Sliders, Check } from "lucide-react";
 
 interface FilterPanelProps {
   categories: any[];
@@ -16,7 +16,6 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
 
   // Local state initialized from search params
   const [search, setSearch] = useState(searchParams.get("search") || "");
-  const [category, setCategory] = useState(searchParams.get("category") || "");
   const [brand, setBrand] = useState(searchParams.get("brand") || "");
   const [priceMin, setPriceMin] = useState(searchParams.get("priceMin") || "");
   const [priceMax, setPriceMax] = useState(searchParams.get("priceMax") || "");
@@ -40,7 +39,6 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
   // Sync state with url params updates
   useEffect(() => {
     setSearch(searchParams.get("search") || "");
-    setCategory(searchParams.get("category") || "");
     setBrand(searchParams.get("brand") || "");
     setPriceMin(searchParams.get("priceMin") || "");
     setPriceMax(searchParams.get("priceMax") || "");
@@ -58,7 +56,6 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
     const params = new URLSearchParams();
 
     if (search) params.set("search", search);
-    if (category) params.set("category", category);
     if (brand) params.set("brand", brand);
     if (priceMin) params.set("priceMin", priceMin);
     if (priceMax) params.set("priceMax", priceMax);
@@ -80,7 +77,6 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
   // Clear all filters
   const resetFilters = () => {
     setSearch("");
-    setCategory("");
     setBrand("");
     setPriceMin("");
     setPriceMax("");
@@ -127,7 +123,7 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             onKeyDown={handleSearchKeyPress}
-            className="w-full bg-slate-900 border border-slate-800 rounded-xl py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 transition-colors"
+            className="w-full bg-slate-900 border border-slate-800 rounded-xl py-2.5 pl-10 pr-4 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-red-500 transition-colors"
           />
           <Search className="absolute left-3 top-3 h-4 w-4 text-slate-500" />
         </div>
@@ -151,7 +147,7 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
               params.set("sort", e.target.value);
               router.push(`/?${params.toString()}`);
             }}
-            className="flex-grow bg-slate-900 border border-slate-800 rounded-xl py-2.5 px-4 text-sm text-slate-300 focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer"
+            className="flex-grow bg-slate-900 border border-slate-800 rounded-xl py-2.5 px-4 text-sm text-slate-300 focus:outline-none focus:border-red-500 transition-colors cursor-pointer"
           >
             <option value="newest">Sort: Newest</option>
             <option value="oldest">Sort: Oldest</option>
@@ -168,33 +164,16 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
       <div className="hidden lg:flex flex-col gap-6 rounded-2xl border border-slate-800 bg-slate-900/20 p-5 backdrop-blur-sm">
         <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
           <h2 className="font-bold text-slate-200 flex items-center gap-2">
-            <Sliders className="h-4 w-4 text-indigo-400" />
+            <Sliders className="h-4 w-4 text-red-500" />
             Filters
           </h2>
           <button
             onClick={resetFilters}
-            className="text-xs text-slate-500 hover:text-indigo-400 flex items-center gap-1 transition-colors"
+            className="text-xs text-slate-500 hover:text-red-400 flex items-center gap-1 transition-colors"
           >
             <RotateCcw className="h-3 w-3" />
             Reset
           </button>
-        </div>
-
-        {/* Categories */}
-        <div className="flex flex-col gap-2">
-          <label className="text-xs font-bold text-slate-500 uppercase tracking-wider">Category</label>
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-sm text-slate-300 focus:outline-none"
-          >
-            <option value="">All Categories</option>
-            {categories.map((cat) => (
-              <option key={cat.id} value={cat.slug}>
-                {cat.name}
-              </option>
-            ))}
-          </select>
         </div>
 
         {/* Brands */}
@@ -203,7 +182,7 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
           <select
             value={brand}
             onChange={(e) => setBrand(e.target.value)}
-            className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-sm text-slate-300 focus:outline-none"
+            className="w-full bg-slate-950 border border-slate-800 rounded-lg p-2 text-sm text-slate-300 focus:outline-none focus:border-red-500"
           >
             <option value="">All Brands</option>
             {brands.map((b) => (
@@ -224,7 +203,7 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
                 onClick={() => handleStatusToggle(status)}
                 className={`flex items-center justify-between text-left text-xs rounded-lg px-3 py-2 border transition-all ${
                   selectedStatuses.includes(status)
-                    ? "bg-indigo-600/10 text-indigo-400 border-indigo-500/30 font-semibold"
+                    ? "bg-red-600/10 text-red-400 border-red-500/30 font-semibold"
                     : "bg-slate-950/40 text-slate-400 border-slate-800/80 hover:border-slate-700"
                 }`}
               >
@@ -250,7 +229,7 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
                 onClick={() => handleConditionToggle(cond.val)}
                 className={`flex items-center justify-between text-left text-xs rounded-lg px-3 py-2 border transition-all ${
                   selectedConditions.includes(cond.val)
-                    ? "bg-indigo-600/10 text-indigo-400 border-indigo-500/30 font-semibold"
+                    ? "bg-red-600/10 text-red-400 border-red-500/30 font-semibold"
                     : "bg-slate-950/40 text-slate-400 border-slate-800/80 hover:border-slate-700"
                 }`}
               >
@@ -270,7 +249,7 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
               placeholder="Min"
               value={priceMin}
               onChange={(e) => setPriceMin(e.target.value)}
-              className="w-1/2 bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+              className="w-1/2 bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-red-500"
             />
             <span className="text-slate-600">-</span>
             <input
@@ -278,7 +257,7 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
               placeholder="Max"
               value={priceMax}
               onChange={(e) => setPriceMax(e.target.value)}
-              className="w-1/2 bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+              className="w-1/2 bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-red-500"
             />
           </div>
         </div>
@@ -292,7 +271,7 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
               placeholder="Min"
               value={batteryMin}
               onChange={(e) => setBatteryMin(e.target.value)}
-              className="w-1/2 bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+              className="w-1/2 bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-red-500"
             />
             <span className="text-slate-600">-</span>
             <input
@@ -300,7 +279,7 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
               placeholder="Max"
               value={batteryMax}
               onChange={(e) => setBatteryMax(e.target.value)}
-              className="w-1/2 bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-indigo-500"
+              className="w-1/2 bg-slate-950 border border-slate-800 rounded-lg p-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:border-red-500"
             />
           </div>
         </div>
@@ -312,7 +291,7 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
               type="checkbox"
               checked={is5g}
               onChange={(e) => setIs5g(e.target.checked)}
-              className="rounded bg-slate-950 border-slate-800 text-indigo-600 focus:ring-indigo-500"
+              className="rounded bg-slate-950 border-slate-800 text-red-600 focus:ring-red-500"
             />
             <span>5G Supported Only</span>
           </label>
@@ -321,7 +300,7 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
               type="checkbox"
               checked={dualSim}
               onChange={(e) => setDualSim(e.target.checked)}
-              className="rounded bg-slate-950 border-slate-800 text-indigo-600 focus:ring-indigo-500"
+              className="rounded bg-slate-950 border-slate-800 text-red-600 focus:ring-red-500"
             />
             <span>Dual SIM Only</span>
           </label>
@@ -331,7 +310,7 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
         <button
           onClick={applyFilters}
           disabled={isPending}
-          className="w-full rounded-xl bg-indigo-600 py-2.5 text-sm font-bold text-white shadow-lg shadow-indigo-900/20 hover:bg-indigo-500 active:scale-[0.98] transition-all disabled:opacity-50"
+          className="w-full rounded-xl bg-red-600 py-2.5 text-sm font-bold text-white shadow-lg shadow-red-900/20 hover:bg-red-500 active:scale-[0.98] transition-all disabled:opacity-50"
         >
           {isPending ? "Applying..." : "Apply Filters"}
         </button>
@@ -343,7 +322,7 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
           <div className="w-full max-w-sm h-full bg-slate-950 border-l border-slate-800 p-6 overflow-y-auto flex flex-col gap-6">
             <div className="flex items-center justify-between border-b border-slate-850 pb-3">
               <h2 className="font-bold text-white flex items-center gap-2 text-lg">
-                <Sliders className="h-5 w-5 text-indigo-400" />
+                <Sliders className="h-5 w-5 text-red-400" />
                 Filters
               </h2>
               <button
@@ -352,23 +331,6 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
               >
                 <X className="h-5 w-5" />
               </button>
-            </div>
-
-            {/* Mobile Category */}
-            <div className="flex flex-col gap-2">
-              <label className="text-xs font-bold text-slate-400 uppercase tracking-wider">Category</label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 text-sm text-white"
-              >
-                <option value="">All Categories</option>
-                {categories.map((cat) => (
-                  <option key={cat.id} value={cat.slug}>
-                    {cat.name}
-                  </option>
-                ))}
-              </select>
             </div>
 
             {/* Mobile Brand */}
@@ -398,7 +360,7 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
                     onClick={() => handleStatusToggle(status)}
                     className={`flex items-center justify-between text-left text-xs rounded-lg px-3 py-2 border transition-all ${
                       selectedStatuses.includes(status)
-                        ? "bg-indigo-600/10 text-indigo-400 border-indigo-500/30 font-semibold"
+                        ? "bg-red-600/10 text-red-400 border-red-500/30 font-semibold"
                         : "bg-slate-900/40 text-slate-400 border-slate-800/80 hover:border-slate-700"
                     }`}
                   >
@@ -424,7 +386,7 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
                     onClick={() => handleConditionToggle(cond.val)}
                     className={`flex items-center justify-between text-left text-xs rounded-lg px-3 py-2 border transition-all ${
                       selectedConditions.includes(cond.val)
-                        ? "bg-indigo-600/10 text-indigo-400 border-indigo-500/30 font-semibold"
+                        ? "bg-red-600/10 text-red-400 border-red-500/30 font-semibold"
                         : "bg-slate-900/40 text-slate-400 border-slate-800/80 hover:border-slate-700"
                     }`}
                   >
@@ -486,7 +448,7 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
                   type="checkbox"
                   checked={is5g}
                   onChange={(e) => setIs5g(e.target.checked)}
-                  className="rounded bg-slate-900 border-slate-800 text-indigo-600 focus:ring-indigo-500"
+                  className="rounded bg-slate-900 border-slate-800 text-red-600 focus:ring-red-500"
                 />
                 <span>5G Supported Only</span>
               </label>
@@ -495,7 +457,7 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
                   type="checkbox"
                   checked={dualSim}
                   onChange={(e) => setDualSim(e.target.checked)}
-                  className="rounded bg-slate-900 border-slate-800 text-indigo-600 focus:ring-indigo-500"
+                  className="rounded bg-slate-900 border-slate-800 text-red-600 focus:ring-red-500"
                 />
                 <span>Dual SIM Only</span>
               </label>
@@ -511,7 +473,7 @@ export function FilterPanel({ categories, brands }: FilterPanelProps) {
               </button>
               <button
                 onClick={applyFilters}
-                className="w-1/2 rounded-xl bg-indigo-600 py-3 text-sm font-bold text-white"
+                className="w-1/2 rounded-xl bg-red-600 py-3 text-sm font-bold text-white"
               >
                 Apply Filters
               </button>

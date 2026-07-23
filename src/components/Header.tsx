@@ -18,9 +18,9 @@ export async function Header() {
           <Link href="/" className="flex items-center space-x-2">
             <span className="text-xl font-extrabold tracking-tight text-white sm:text-2xl">
               SecondHand
-              <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-red-500 via-rose-500 to-orange-500 bg-clip-text text-transparent">
                 {" "}
-                Electronics
+                Mobiles
               </span>
             </span>
           </Link>
@@ -39,7 +39,7 @@ export async function Header() {
                 href={`/?category=${cat.slug}`}
                 className="flex items-center gap-1.5 text-sm font-medium text-slate-300 hover:text-white transition-colors"
               >
-                <IconRenderer name={cat.icon} className="h-4 w-4 text-indigo-400" />
+                <IconRenderer name={cat.icon} className="h-4 w-4 text-red-500" />
                 {cat.name}
               </Link>
             ))}
@@ -52,7 +52,7 @@ export async function Header() {
             href="/admin"
             className="flex items-center gap-1.5 rounded-full border border-slate-800 bg-slate-900 px-3.5 py-1.5 text-xs font-semibold text-slate-300 hover:bg-slate-800 hover:text-white transition-all"
           >
-            <Shield className="h-3.5 w-3.5 text-indigo-400" />
+            <Shield className="h-3.5 w-3.5 text-red-500" />
             Admin Panel
           </Link>
           <a

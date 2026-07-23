@@ -18,21 +18,21 @@ export default async function Page({ searchParams }: PageProps) {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 w-full flex-grow">
       {/* Premium Hero Banner Section */}
-      <div className="relative mb-12 rounded-3xl overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-950/20 to-slate-950 border border-slate-800/80 p-8 sm:p-12 text-center shadow-xl">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(99,102,241,0.12),rgba(255,255,255,0))]" />
+      <div className="relative mb-12 rounded-3xl overflow-hidden bg-gradient-to-br from-slate-900 via-red-950/20 to-slate-950 border border-slate-800/80 p-8 sm:p-12 text-center shadow-xl">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(239,68,68,0.12),rgba(255,255,255,0))]" />
         
         <div className="relative z-10 max-w-3xl mx-auto flex flex-col items-center">
-          <span className="flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-indigo-400 bg-indigo-500/10 border border-indigo-500/20 rounded-full px-3 py-1 mb-4">
-            <Sparkles className="h-3 w-3" /> Live Inventory Availability
+          <span className="flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-red-400 bg-red-500/10 border border-red-500/20 rounded-full px-3 py-1 mb-4">
+            <Sparkles className="h-3 w-3" /> Live Inventory & Repairing
           </span>
           <h1 className="text-3xl font-black tracking-tight text-white sm:text-5xl mb-4 leading-tight">
-            Premium Pre-Owned Tech, <br/>
-            <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              Zero Guesswork.
+            Second-Hand Mobiles & Repair, <br/>
+            <span className="bg-gradient-to-r from-red-400 via-rose-400 to-orange-400 bg-clip-text text-transparent">
+              Expert Solutions.
             </span>
           </h1>
           <p className="text-sm sm:text-base text-slate-400 max-w-xl leading-relaxed">
-            See exactly what's Available, Reserved, or Sold. No unnecessary WhatsApp back-and-forth. Check specs, inspect known issues, and buy directly.
+            Browse our verified second-hand smartphones or get your device repaired by certified professionals. Inspect condition, battery health, and buy or repair directly.
           </p>
         </div>
       </div>

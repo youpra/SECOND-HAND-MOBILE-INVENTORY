@@ -24,7 +24,7 @@ export function ProductCard({ product }: ProductCardProps) {
     reserved: { label: "Reserved", bg: "bg-amber-500/10 text-amber-400 border-amber-500/30" },
     sold: { label: "Sold", bg: "bg-slate-700/20 text-slate-400 border-slate-700/30" },
     "out-of-stock": { label: "Out of Stock", bg: "bg-red-500/10 text-red-400 border-red-500/30" },
-    repairing: { label: "Repairing", bg: "bg-indigo-500/10 text-indigo-400 border-indigo-500/30" },
+    repairing: { label: "Repairing", bg: "bg-red-500/10 text-red-400 border-red-500/30" },
     "coming-soon": { label: "Coming Soon", bg: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30" },
   }[product.status as string] || { label: "Unknown", bg: "bg-slate-500/10 text-slate-400 border-slate-500/30" };
 
@@ -40,7 +40,7 @@ export function ProductCard({ product }: ProductCardProps) {
     <div className={`relative flex flex-col h-full rounded-2xl border border-slate-800 bg-slate-900/40 p-4 transition-all duration-300 ${
       isSold
         ? ""
-        : "hover:border-slate-700 hover:bg-slate-900/60 hover:-translate-y-1 hover:shadow-2xl hover:shadow-indigo-950/20"
+        : "hover:border-slate-700 hover:bg-slate-900/60 hover:-translate-y-1 hover:shadow-2xl hover:shadow-red-950/20"
     }`}>
       {/* Grayscale overlay for Sold / Out of stock */}
       {(isSold || isOutOfStock) && (
@@ -57,7 +57,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </span>
 
         {discount && !isSold && !isOutOfStock && (
-          <span className="absolute top-2 right-2 z-20 rounded-full bg-indigo-600 px-2.5 py-0.5 text-xs font-bold text-white shadow-md">
+          <span className="absolute top-2 right-2 z-20 rounded-full bg-red-600 px-2.5 py-0.5 text-xs font-bold text-white shadow-md">
             {discount}% OFF
           </span>
         )}
@@ -92,7 +92,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Product Title */}
-        <h3 className="mb-2 font-bold text-slate-100 line-clamp-1 group-hover:text-indigo-400 transition-colors">
+        <h3 className="mb-2 font-bold text-slate-100 line-clamp-1 group-hover:text-red-400 transition-colors">
           {product.title}
         </h3>
 
@@ -109,7 +109,7 @@ export function ProductCard({ product }: ProductCardProps) {
             </span>
           )}
           {product.batteryHealth && (
-            <span className="rounded bg-slate-800 px-2 py-0.5 text-xs font-medium text-indigo-400 flex items-center gap-0.5">
+            <span className="rounded bg-slate-800 px-2 py-0.5 text-xs font-medium text-red-400 flex items-center gap-0.5">
               <Tag className="h-3 w-3" />
               {product.batteryHealth}% BH
             </span>

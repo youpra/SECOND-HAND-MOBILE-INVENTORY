@@ -6,29 +6,35 @@ import path from "path";
 
 const mockCategories = [
   { name: "Mobile Phones", icon: "Smartphone", description: "Smartphones and cellular devices" },
-  { name: "Laptops", icon: "Laptop", description: "Portable personal computers" },
-  { name: "Tablets", icon: "Tablet", description: "Tablet computers and slates" },
-  { name: "Smart Watches", icon: "Watch", description: "Wearables and smartwatches" },
-  { name: "Earbuds", icon: "Headphones", description: "Wireless earbuds and headphones" },
-  { name: "Gaming Consoles", icon: "Gamepad", description: "Home and handheld gaming consoles" },
-  { name: "Cameras", icon: "Camera", description: "Digital cameras and lenses" },
-  { name: "Accessories", icon: "Tv", description: "Chargers, cables, cases, and more" },
 ];
 
 const mockBrands = [
-  { name: "Apple", description: "Apple iOS and macOS products" },
-  { name: "Samsung", description: "Samsung Android and Windows devices" },
-  { name: "Google", description: "Google Pixel smartphones and accessories" },
+  { name: "Apple", description: "Apple iOS devices" },
+  { name: "Samsung", description: "Samsung Android devices" },
+  { name: "Google", description: "Google Pixel smartphones" },
   { name: "OnePlus", description: "OnePlus Android phones" },
-  { name: "Sony", description: "Sony PlayStation, cameras, and audio gear" },
-  { name: "Nintendo", description: "Nintendo Switch and handheld accessories" },
-  { name: "Nothing", description: "Nothing Phone and Ear devices" },
+  { name: "Nothing", description: "Nothing Phone devices" },
 ];
 
 export async function GET(request: NextRequest) {
   try {
     console.log("Seeding database via API...");
     const payload = await getPayload({ config });
+
+    // 0. WIPE OLD DATA FOR RE-SEEDING (to enforce mobile-only constraint)
+    console.log("Wiping existing products, categories, and brands...");
+    await payload.delete({
+      collection: "products",
+      where: { id: { exists: true } },
+    });
+    await payload.delete({
+      collection: "categories",
+      where: { id: { exists: true } },
+    });
+    await payload.delete({
+      collection: "brands",
+      where: { id: { exists: true } },
+    });
 
     // 1. Seed Admin User
     const existingAdmin = await payload.find({
@@ -95,55 +101,36 @@ export async function GET(request: NextRequest) {
     const categoryMap: { [key: string]: string } = {};
     for (const cat of mockCategories) {
       const slug = cat.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-      const existing = await payload.find({
+      const created = await payload.create({
         collection: "categories",
-        where: { slug: { equals: slug } },
-        limit: 1,
+        data: {
+          name: cat.name,
+          slug,
+          icon: cat.icon,
+          description: cat.description,
+          image: mediaId,
+        },
       });
-
-      if (existing.docs.length === 0) {
-        const created = await payload.create({
-          collection: "categories",
-          data: {
-            name: cat.name,
-            slug,
-            icon: cat.icon,
-            description: cat.description,
-            image: mediaId,
-            active: true,
-          },
-        });
-        categoryMap[slug] = created.id as string;
-      } else {
-        categoryMap[slug] = existing.docs[0].id as string;
-      }
+      categoryMap[slug] = created.id as string;
+      console.log(`-> Created category: ${cat.name}`);
     }
 
     // 4. Seed Brands
     const brandMap: { [key: string]: string } = {};
     for (const brand of mockBrands) {
       const slug = brand.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-      const existing = await payload.find({
+      const created = await payload.create({
         collection: "brands",
-        where: { slug: { equals: slug } },
-        limit: 1,
+        data: {
+          name: brand.name,
+          slug,
+          description: brand.description,
+          logo: mediaId,
+          featured: true,
+        },
       });
-
-      if (existing.docs.length === 0) {
-        const created = await payload.create({
-          collection: "brands",
-          data: {
-            name: brand.name,
-            slug,
-            description: brand.description,
-            logo: mediaId,
-            featured: true,
-          },
-        });
-        brandMap[slug] = created.id as string;
-      } else {
-        brandMap[slug] = existing.docs[0].id as string;
-      }
+      brandMap[slug] = created.id as string;
+      console.log(`-> Created brand: ${brand.name}`);
     }
 
     // 5. Seed Products
@@ -155,8 +142,8 @@ export async function GET(request: NextRequest) {
         model: "iPhone 13 Pro Max",
         category: categoryMap["mobile-phones"],
         status: "available",
-        price: 649,
-        originalLaunchPrice: 1099,
+        price: 54000,
+        originalLaunchPrice: 129000,
         ram: "6 GB",
         storage: "256 GB",
         condition: "excellent",
@@ -207,8 +194,8 @@ export async function GET(request: NextRequest) {
         model: "Galaxy S23 Ultra",
         category: categoryMap["mobile-phones"],
         status: "reserved",
-        price: 799,
-        originalLaunchPrice: 1379,
+        price: 67000,
+        originalLaunchPrice: 124000,
         ram: "12 GB",
         storage: "512 GB",
         condition: "like-new",
@@ -246,8 +233,8 @@ export async function GET(request: NextRequest) {
         model: "iPhone 14 Pro",
         category: categoryMap["mobile-phones"],
         status: "sold",
-        price: 720,
-        originalLaunchPrice: 999,
+        price: 61000,
+        originalLaunchPrice: 119000,
         ram: "6 GB",
         storage: "128 GB",
         condition: "good",
@@ -283,121 +270,42 @@ export async function GET(request: NextRequest) {
         whatsappClickCount: 89,
         callClickCount: 15,
       },
-      {
-        title: 'MacBook Pro 14" M2 Pro - 16GB / 512GB',
-        slug: "macbook-pro-14-m2-pro-16gb-512gb",
-        brand: brandMap["apple"],
-        model: 'MacBook Pro 14"',
-        category: categoryMap["laptops"],
-        status: "available",
-        price: 1450,
-        originalLaunchPrice: 1999,
-        ram: "16 GB",
-        storage: "512 GB",
-        condition: "excellent",
-        batteryHealth: 93,
-        operatingSystem: "macOS Sonoma",
-        color: "Space Gray",
-        yearReleased: 2023,
-        warrantyOption: "store-warranty",
-        warrantyDuration: "6 Months",
-        boxAndAccessories: {
-          invoiceAvailable: true,
-          boxAvailable: true,
-          originalCharger: true,
-          originalCable: true,
-        },
-        mainImage: mediaId,
-        customFeatures: [
-          { name: "Processor", value: "Apple M2 Pro (10-Core CPU, 16-Core GPU)", icon: "Cpu", enabled: true },
-          { name: "Display Size", value: "14.2 Inch Liquid Retina XDR", icon: "Monitor", enabled: true },
-          { name: "Battery Capacity", value: "70 Watt-hour Lithium Polymer", icon: "Battery", enabled: true },
-        ],
-        knownIssues: [
-          {
-            title: "Tiny Bottom Case Dent",
-            severity: "light",
-            description: "Microscopic cosmetic indentation on the base aluminum cover, strictly cosmetic.",
-            icon: "AlertTriangle",
-          },
-        ],
-        viewCount: 110,
-        whatsappClickCount: 18,
-        callClickCount: 3,
-      },
-      {
-        title: "Sony Alpha 7 IV - Mirrorless Camera (Body Only)",
-        slug: "sony-alpha-7-iv-mirrorless-camera-body-only",
-        brand: brandMap["sony"],
-        model: "Alpha 7 IV",
-        category: categoryMap["cameras"],
-        status: "coming-soon",
-        price: 1899,
-        originalLaunchPrice: 2499,
-        condition: "like-new",
-        color: "Black",
-        yearReleased: 2021,
-        warrantyOption: "seller-warranty",
-        warrantyDuration: "30 Days",
-        boxAndAccessories: {
-          invoiceAvailable: true,
-          boxAvailable: true,
-          originalCharger: true,
-          originalCable: true,
-          accessoriesIncluded: "Original neck strap, camera body cap, 1x battery",
-        },
-        mainImage: mediaId,
-        customFeatures: [
-          { name: "Sensor", value: "33 MP Full-Frame Exmor R CMOS", icon: "Camera", enabled: true },
-          { name: "Stabilization", value: "5-axis In-body Image Stabilization", icon: "Activity", enabled: true },
-          { name: "Auto Focus", value: "Real-time Eye AF for Humans/Animals", icon: "Eye", enabled: true },
-        ],
-        knownIssues: [],
-        viewCount: 88,
-        whatsappClickCount: 5,
-        callClickCount: 0,
-      },
     ];
 
     for (const prod of products) {
-      const existing = await payload.find({
+      await payload.create({
         collection: "products",
-        where: { slug: { equals: prod.slug } },
-        limit: 1,
+        data: prod,
       });
-
-      if (existing.docs.length === 0) {
-        await payload.create({
-          collection: "products",
-          data: prod,
-        });
-        console.log(`-> Created product: ${prod.title}`);
-      }
+      console.log(`-> Created product: ${prod.title}`);
     }
 
     // 6. Seed Global Settings
-    const settings = await payload.findGlobal({
+    await payload.updateGlobal({
       slug: "settings",
+      data: {
+        siteName: "Mobile Repairing & Inventory",
+        whatsappNumber: "+919876543210",
+        contactPhoneNumber: "+919876543210",
+        seoTitle: "Second-Hand Mobiles & Expert Repairing",
+        seoDescription: "Browse verified pre-owned smartphones and book high-quality repairing services online.",
+        logo: mediaId,
+      },
     });
+    console.log("-> Updated global settings.");
 
-    if (!settings.whatsappNumber) {
-      await payload.updateGlobal({
-        slug: "settings",
-        data: {
-          siteName: "SecondHand Electronics",
-          whatsappNumber: "+919876543210",
-          contactPhoneNumber: "+919876543210",
-          seoTitle: "Modern Second-Hand Electronics Inventory",
-          seoDescription: "Browse available, reserved, and sold used mobile phones, laptops, and tablets directly.",
-          logo: mediaId,
-        },
-      });
-      console.log("-> Seeded default global Settings.");
-    }
-
-    return NextResponse.json({ success: true, message: "Database seeded successfully!" });
+    return NextResponse.json({
+      success: true,
+      message: "Database wiped and seeded with Mobile Phones only successfully!",
+    });
   } catch (err: any) {
-    console.error("Seeding API failed: ", err);
-    return NextResponse.json({ success: false, error: err?.message || err }, { status: 500 });
+    console.error("Seeding failed:", err);
+    return NextResponse.json(
+      {
+        success: false,
+        error: err.message || err,
+      },
+      { status: 500 }
+    );
   }
 }

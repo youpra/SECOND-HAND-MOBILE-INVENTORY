@@ -79,7 +79,7 @@ export default async function Page({ params }: ProductPageProps) {
     reserved: { label: "Reserved", bg: "bg-amber-500/10 text-amber-400 border-amber-500/30" },
     sold: { label: "Sold", bg: "bg-slate-700/20 text-slate-400 border-slate-700/30" },
     "out-of-stock": { label: "Out of Stock", bg: "bg-red-500/10 text-red-400 border-red-500/30" },
-    repairing: { label: "Repairing", bg: "bg-indigo-500/10 text-indigo-400 border-indigo-500/30" },
+    repairing: { label: "Repairing", bg: "bg-red-500/10 text-red-400 border-red-500/30" },
     "coming-soon": { label: "Coming Soon", bg: "bg-cyan-500/10 text-cyan-400 border-cyan-500/30" },
   }[product.status as string] || { label: "Unknown", bg: "bg-slate-500/10 text-slate-400 border-slate-500/30" };
 
@@ -169,7 +169,7 @@ export default async function Page({ params }: ProductPageProps) {
             )}
 
             {product.customerNotes && (
-              <div className="flex items-start gap-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs rounded-xl p-3 mb-4">
+              <div className="flex items-start gap-2 bg-red-500/10 border border-red-500/20 text-red-400 text-xs rounded-xl p-3 mb-4">
                 <AlertCircle className="h-4 w-4 flex-shrink-0 mt-0.5" />
                 <span>{product.customerNotes}</span>
               </div>
@@ -216,7 +216,7 @@ export default async function Page({ params }: ProductPageProps) {
         <div className="lg:col-span-7 flex flex-col gap-8 w-full">
           <div className="rounded-3xl border border-slate-800 bg-slate-900/10 p-6 sm:p-8 backdrop-blur-sm">
             <h2 className="text-xl font-bold text-white mb-6 border-b border-slate-850 pb-3 flex items-center gap-2">
-              <ShieldCheck className="h-5 w-5 text-indigo-400" />
+              <ShieldCheck className="h-5 w-5 text-red-400" />
               Detailed Specifications
             </h2>
 
@@ -239,7 +239,7 @@ export default async function Page({ params }: ProductPageProps) {
               {product.batteryHealth && (
                 <div className="flex justify-between py-2 border-b border-slate-850/40 text-sm">
                   <span className="text-slate-500">Battery Health</span>
-                  <span className="text-indigo-400 font-bold">{product.batteryHealth}%</span>
+                  <span className="text-red-400 font-bold">{product.batteryHealth}%</span>
                 </div>
               )}
               {product.ram && (
@@ -288,7 +288,7 @@ export default async function Page({ params }: ProductPageProps) {
                   .map((feat: any, idx: number) => (
                     <div key={idx} className="flex justify-between py-2 border-b border-slate-850/40 text-sm">
                       <span className="text-slate-500 flex items-center gap-1.5">
-                        {feat.icon && <IconRenderer name={feat.icon} className="h-4 w-4 text-indigo-400" />}
+                        {feat.icon && <IconRenderer name={feat.icon} className="h-4 w-4 text-red-400" />}
                         {feat.name}
                       </span>
                       <span className="text-white font-medium">{feat.value}</span>
@@ -364,7 +364,7 @@ export default async function Page({ params }: ProductPageProps) {
 
                   return (
                     <div key={idx} className="rounded-2xl border border-slate-850 bg-slate-950/60 p-4 flex gap-3 items-start">
-                      <div className="rounded-lg bg-slate-900 border border-slate-850 p-2 text-indigo-400 flex-shrink-0">
+                      <div className="rounded-lg bg-slate-900 border border-slate-850 p-2 text-red-400 flex-shrink-0">
                         <IconRenderer name={issue.icon || "AlertCircle"} className="h-4.5 w-4.5" />
                       </div>
                       <div className="flex-grow">
